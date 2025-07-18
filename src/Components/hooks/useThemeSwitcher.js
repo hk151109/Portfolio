@@ -11,15 +11,15 @@ const useThemeSwitcher = () => {
 
     const handleChange = () => {
       if (userPref) {
-        let check = userPref === "light" ? "dark" : "dark";
+        let check = userPref === "light" ? "light" : "dark";
         setMode(check);
         if (check === "dark") {
           document.documentElement.classList.add("dark");
         } else {
           document.documentElement.classList.remove("dark");
         }
-      }else{
-        let check = mediaQuery.matches ? "dark" : "light";
+      } else {
+        let check = "dark";
         setMode(check);
         if (check === "dark") {
           document.documentElement.classList.add("dark");
