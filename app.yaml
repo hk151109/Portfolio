@@ -1,0 +1,26 @@
+# This file configures a Next.js application for deployment on Google App Engine.
+
+# Specifies the runtime environment. A recent Node.js LTS version is recommended.
+# App Engine will automatically use 'npm start' to run your application.
+runtime: nodejs18
+
+# Handlers define how App Engine routes requests to your application.
+handlers:
+  # Serve all static files from the .next/static directory, which is the output
+  # of the 'next build' command. This improves performance by serving static
+  # assets directly from Google's infrastructure.
+  - url: /_next/static
+    static_dir: .next/static
+
+  # All other requests are sent to the Next.js server.
+  # 'script: auto' lets App Engine manage the start command.
+  # 'secure: always' redirects all HTTP requests to HTTPS.
+  - url: /.*
+    script: auto
+    secure: always
+
+# Environment variables to be set for the application.
+env_variables:
+  # Sets the Node.js environment to 'production', which is a standard
+  # practice for production deployments and enables Next.js optimizations.
+  NODE_ENV: 'production'
