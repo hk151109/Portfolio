@@ -12,24 +12,23 @@ const Footer = () => {
       <Layout className="py-2 flex items-center justify-between lg:flex-col lg:py-6">
         <span>{new Date().getFullYear()} &copy; All Rights Reserved.</span>
         <div className="flex items-center lg:py-2">
-          Made with&nbsp;{" "}
-          <span className="mt-1">{<AiFillHeart color="red" />}</span>&nbsp;by
+          Made by
           &nbsp;
           <Link
-            href={"https://github.com/gaurav13020"}
+            href={"https://github.com/hk151109"}
             className={"underline"}
             target="_blank"
           >
             {" "}
-            Gaurav Singh
+            Harikrishnan Gopal
           </Link>
         </div>
         <Link
-          href={"https://www.linkedin.com/in/gaurav13020/"}
+          href={"https://linkedin.com/in/harikrishnangopal"}
           target="_blank"
           className={"underline"}
         >
-          Say Hello <span className="no-underline">😊</span>{" "}
+          Say Hello on LinkedIn<span className="no-underline">😊</span>{" "}
         </Link>
       </Layout>
       <HireMe/>

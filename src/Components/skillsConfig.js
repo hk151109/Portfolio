@@ -1,5 +1,4 @@
-import React from "react";
-
+// skillsConfig.js
 const skillsData = [
   {
     title: "Programming Languages",
@@ -35,30 +34,4 @@ const skillsData = [
   },
 ];
 
-const Skills = () => {
-  return (
-    <div className="max-w-6xl mx-auto px-4 py-16">
-      <h2 className="text-center font-bold text-5xl mb-12">SKILLS</h2>
-
-      <div className="space-y-8">
-        {skillsData.map((category, idx) => (
-          <div key={idx}>
-            <h3 className="text-xl font-semibold mb-2">{category.title}</h3>
-            <div className="flex flex-wrap gap-2">
-              {category.skills.map((skill, i) => (
-                <span
-                  key={i}
-                  className="bg-gray-200 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-100 px-3 py-1 rounded-full shadow-sm"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default Skills;
+export default skillsData;

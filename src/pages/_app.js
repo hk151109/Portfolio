@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }) {
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title> Gaurav | Home</title>
+        <title> Harikrishnan | Home</title>
         <link rel="icon" href="" type="image/x-icon" />
       </Head>
       <main

@@ -1,86 +1,81 @@
-import React, { useEffect, useRef } from "react";
-import { useScroll, motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useScroll } from "framer-motion";
 import LiIcon from "./LiIcon";
 
+/* ────────────────────────────────────────────────────────── */
 const Details = ({ type, time, place, info }) => {
   const ref = useRef(null);
+
   return (
     <li
       ref={ref}
-      className="my-8 first:mt-0 last:mb-0 w-[60%] mx-auto flex flex-col items-start justify-between md:w-[80%]"
+      className="my-8 first:mt-0 last:mb-0 w-[60%] md:w-[80%] mx-auto flex flex-col"
     >
-    <LiIcon reference={ref}/>
-    <motion.div
-     initial={{y:50}}
-     whileInView={{y:0}}
-     transition={{duration:0.5,type:"spring"}}>
+      <LiIcon reference={ref} />
 
-      <h3 className="capitalize font-bold text-3xl sm:text-xl xs:text-lg">{type}</h3>
-      <span className="capitalize font-medium text-dark/75 dark:text-primaryDark/75 xs:text-sm">
-        {time}|{place}
-      </span>
-      <p className="font-medium w-full md:text-sm">{info}</p>
-    </motion.div>
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", duration: 0.5 }}
+        viewport={{ once: true }}
+      >
+        <h3 className="font-bold text-3xl sm:text-xl">{type}</h3>
+
+        <span className="block font-medium text-dark/60 dark:text-primaryDark/60 text-sm mb-2">
+          {time} | {place}
+        </span>
+
+        <p className="font-medium md:text-sm">{info}</p>
+      </motion.div>
     </li>
   );
 };
 
+/* ────────────────────────────────────────────────────────── */
 const Education = () => {
-  const ref1 = useRef(null);
+  const timelineRef = useRef(null);
   const { scrollYProgress } = useScroll({
-    target: ref1,
+    target: timelineRef,
     offset: ["start end", "center start"],
   });
-  useEffect(() => {
-    console.log("scrollYprogress: ", scrollYProgress);
-  }, [scrollYProgress]);
-  return (
-    <div className="my-64">
-      <h2 className="font-bold text-8xl mt-64 mb-32 w-full text-center md:text-6xl md:mb-16 xs:text-4xl">
-        EDUCATION
-      </h2>
 
-      <div ref={ref1} className="w-[75%] mx-auto relative lg:w-[90%] md:w-full">
-        {/* scrolling  */}
-        <motion.div
+  return (
+    <section className="mt-0 mb-32 md:mb-24 sm:mb-16">
+    <h3 className="text-center font-bold text-5xl md:text-4xl sm:text-3xl mb-12 md:mb-10">
+      EDUCATION
+    </h3>
+
+      <div ref={timelineRef} className="relative w-[75%] lg:w-[90%] md:w-full mx-auto">
+        {/* vertical timeline line */}
+        <motion.span
           style={{ scaleY: scrollYProgress }}
-          className="absolute left-9 top-0 w-[4px] h-full bg-dark origin-top dark:bg-primary md:w-[2px] md:left-[30px] xs:left-[20px]"
+          className="absolute left-9 md:left-[30px] xs:left-[20px] top-0 w-[4px] md:w-[2px] h-full bg-dark dark:bg-primary origin-top"
         />
 
-        <ul className="w-full flex flex-col items-start justify-between xs:ml-2">
+        <ul className="flex flex-col items-start xs:ml-2">
           <Details
-            type="B.Tech in Computer Engineering"
-            time="2022 - 2026"
-            place="KJ Somaiya School of Engineering, Somaiya Vidyavihar University"
+            type="B.Tech in Computer Engineering"
+            time="2022 – 2026"
+            place="KJ Somaiya School of Engineering"
             info={
               <>
-                Honours Degree in Data Science and Analytics.
+                Honours Degree in Data Science & Analytics.
                 <br />
-                Mumbai, Maharashtra, India
-                <br />
-                Related Coursework:
-                <br />
-                Artificial Intelligence, Machine Learning, Data Science, 
-                <br />
-                Database Management Systems, Data Structures and Algorithms,
-                <br />
-                Operating Systems, Computer Networks, Software Engineering, Web Development.
+                Related coursework: AI, ML, Data Science, DBMS, DSA,
+                Operating Systems, Computer Networks, Web Dev.
               </>
             }
           />
+
           <Details
-            type="12th board (CBSE)"
+            type="12th Board (CBSE)"
             time="2022"
-            place="Maharashtra State Board of Secondary & Higher Secondary Education"
-            info={
-              <>
-                Mumbai, Maharashtra, India
-              </>
-            }
+            place="MSBSHSE, Maharashtra"
+            info={<>Mumbai, Maharashtra, India</>}
           />
         </ul>
       </div>
-    </div>
+    </section>
   );
 };
 

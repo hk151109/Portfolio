@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title> Gaurav | Home </title>
+        <title> Harikrishnan | Home </title>
       </Head>
       <Transitions />
       <main className="flex items-center text-dark w-full min-h-screen dark:text-light">
@@ -38,12 +38,12 @@ export default function Home() {
                 className="!text-6xl  !text-left xl:!text-5xl lg:!text-center lg:!text-6xl md:!text-5xl sm:!text-3xl"
               /> */}
               <AnimatedText
-                text="Hi!👋 I'm Gaurav"
+                text="Hi!👋 I'm Harikrishnan"
                 className="text-7xl  !text-left xl:!text-5xl lg:!text-center lg:!text-5xl lg:!mb-1  md:!text-5xl sm:!text-xl sm:!mb-1"
                 fontColour="!text-black-500"
               />
               <AnimatedText
-                text="Machine Learning | Data Science Engineer"
+                text="Data Science Engineer | Machine Learning"
                 fontColour="!text-black-500"
                 className="text-3xl !text-left xl:!text-5xl lg:!text-center lg:!text-6xl md:!text-5xl sm:!text-3xl"
               />
@@ -63,7 +63,7 @@ export default function Home() {
               </p> */}
               <div className="flex flex-wrap  items-center self-start mt-2 lg:self-center">
                 <Link
-                  href="https://gauravsingh.vercel.app/Gaurav_Singh_Resume.pdf"
+                  href="../Harikrishnan_Gopal_Resume.pdf"
                   className="flex items-center m-1.5 bg-dark text-light p-2 px-6 rounded-lg text-lg font-semibold dark:text-dark dark:bg-light hover:dark:bg-dark hover:dark:text-light hover:bg-light hover:text-dark border-2 border-solid border-transparent hover:border-dark hover:dark:border-light md:p-2 md:px-4 md:text-base"
                   download={true}
                 >
@@ -84,8 +84,7 @@ export default function Home() {
                   ABOUT <ImUserTie className="ml-4" />
                 </Link>
                 <Link
-                  href={"https://mail.google.com/mail/u/0/?fs=1&tf=cm&source=mailto&to=gauravsingh13020@gmail.com"}
-                  // href={"https://mail.google.com/mail/u/0/?fs=1&tf=cm&source=mailto&to=gauravsingh13020@gmail.com"}
+                  href={"https://mail.google.com/mail/u/0/?fs=1&tf=cm&source=mailto&to=harikrishnangopal0411@gmail.com"}
                   target="_blank"
                   className="ml-4 flex items-center m-1.5 bg-dark text-light p-2 rounded-lg text-lg font-semibold dark:text-dark dark:bg-light hover:dark:bg-dark hover:dark:text-light hover:bg-light hover:text-dark border-2 border-solid border-transparent hover:border-dark hover:dark:border-light md:p-2 md:px-4 md:text-base"
                 >

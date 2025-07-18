@@ -19,7 +19,7 @@ const Logo = () => {
           transition:{duration:1,repeat:Infinity}
         }}
       >
-        GS  
+        HK  
       </MotionLink>
     </div>
   );
