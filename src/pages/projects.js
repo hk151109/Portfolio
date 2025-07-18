@@ -148,8 +148,8 @@ const projects = () => {
               <FeatureProject
                 type={"FEATURE PROJECT"}
                 title={"FINCREDIBLE"}
-                link="https://github.com/gaurav13020/drowsinessDetection"
-                github={"https://github.com/gaurav13020/drowsinessDetection"}
+                link="https://github.com/hk151109/FinCredible"
+                github={"https://github.com/hk151109/FinCredible"}
                 img={fincredible}
                 summary={`
                 Designed an ETL pipeline to integrate real-time market ticks and 10K+ daily news articles into MongoDB, powering user-specific feeds and portfolio analytics.<br /><br />
@@ -162,8 +162,8 @@ const projects = () => {
               <FeatureProject
                 type={"FEATURE PROJECT"}
                 title={"STOCKSAGE"}
-                link="https://github.com/gaurav13020/youtubeDataAnalysis"
-                github={"https://github.com/gaurav13020/youtubeDataAnalysis"}
+                link="https://github.com/hk151109/Stocksage"
+                github={"https://github.com/hk151109/Stocksage"}
                 img={Stocksage}
                 summary={`
                 Built a Flask micro-service that streams live OHLC data from Alpha Vantage, feeds it to an LSTM (TensorFlow/Keras), and serves rolling price forecasts via REST API.<br /><br />
@@ -175,8 +175,8 @@ const projects = () => {
               <FeatureProject
                 type={"FEATURE PROJECT"}
                 title={"UNIQSCAN"}
-                link="https://github.com/gaurav13020/blackScholes"
-                github={"https://github.com/gaurav13020/blackScholes"}
+                link="https://github.com/hk151109/UniqScan"
+                github={"https://github.com/hk151109/UniqScan"}
                 img={uniqscan}
                 summary={`
                 Developed a full-stack web platform (FastAPI + MERN) that extracts text with NLTK and OCR, encodes it using a fine-tuned RoBERTa model, and flags plagiarised or LLM-generated content with 93% F1-score, maintaining plagiarism records in a structured MySQL table.<br /><br />
@@ -188,8 +188,8 @@ const projects = () => {
               <FeatureProject
                 type={"FEATURE PROJECT"}
                 title={"SQL ASSISTANT"}
-                link="https://lookerstudio.google.com/reporting/c4386709-63fa-497d-8a2d-3b92e5538d96"
-                github={"https://github.com/gaurav13020/uberETLPipeline"}
+                link="https://sqlassistant.streamlit.app/"
+                github={"https://github.com/hk151109/Sql_Assistant"}
                 img={sqlassistant}
                 summary={`
                 Built a Streamlit tool that converts plain-English questions into parameterised SQL via Google Gemini embeddings, enabling instant data exploration for non-technical users.<br /><br />
@@ -201,8 +201,8 @@ const projects = () => {
               <FeatureProject
                 type={"FEATURE PROJECT"}
                 title={"SAFEVIEW"}
-                link="https://github.com/gaurav13020/sp500"
-                github={"https://github.com/gaurav13020/sp500"}
+                link="https://github.com/hk151109/SafeView"
+                github={"https://github.com/hk151109/SafeView"}
                 img={safeview}
                 summary={`
                 Developed SafeView, a real-time browser extension for automated NSFW content moderation using a fine-tuned MobileNet-V3 CNN (F1-score improved from 86% to 92%).<br /><br />
@@ -220,8 +220,8 @@ Integrated advanced features like asynchronous buffering, auto-blurring of flagg
               <FeatureProject
                 type={"FEATURE PROJECT"}
                 title={"CODESYNC"}
-                link="https://github.com/gaurav13020/Simple_Brownian_Simulator"
-                github={"https://github.com/gaurav13020/Simple_Brownian_Simulator"}
+                link="https://github.com/hk151109/CodeSync"
+                github={"https://github.com/hk151109/CodeSync"}
                 img={codesync}
                 summary={`
                 A real-time collaborative coding platform enabling simultaneous multi-user code editing and execution using Firestore and Dockerized backend.<br /><br />
@@ -233,9 +233,9 @@ Integrated advanced features like asynchronous buffering, auto-blurring of flagg
               <FeatureProject
                 type={"FEATURE PROJECT"}
                 title={"PORTFOLIO"}
-                link="https://gauravsingh.vercel.app/projects"
-                github={"https://github.com/gaurav13020/portfolio"}
-                img={codesync}
+                link="https://github.com/hk151109/portfolio"
+                github={"https://github.com/hk151109/portfolio"}
+                img={portfolio}
                 summary={` A portfolio website using Nextjs and TailwindCSS is a great way to showcase skills. It has a clean design and easy navigation with separate pages for projects, experience, skills, and about me. <br /><br />Projects have details on tools used, skills list expertise, and About Me page has bio, resume, and contact information. It offers a professional online presence for potential clients/employers to learn about skills and accomplishments.`}
               />
             </div>

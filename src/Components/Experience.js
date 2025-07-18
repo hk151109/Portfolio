@@ -2,11 +2,11 @@ import React, { useRef } from "react";
 import { motion, useScroll } from "framer-motion";
 import LiIcon from "./LiIcon";
 
-const timeline = [
+const workTimeline = [
   {
-    type: "@CDSL – Central Depository Services (India) Ltd.",
+    type: "CDSL – Central Depository Services (India) Ltd.",
     position: "Machine Learning Intern",
-    time: "May 2025 – Present",
+    time: "May 2025 – July 2025",
     place: "Lower Parel, Mumbai",
     info1: `Built an Azure-hosted micro-services pipeline that ingests and cleans investor-grievance & help-desk records, standardising 40+ text fields with Python/SQL for downstream modelling.
 `,
@@ -21,45 +21,47 @@ const timeline = [
   },
 
   {
-    type: "@KJSCE – Software Development Center",
+    type: "KJSCE – Software Development Center",
     position: "Software Engineer Intern",
     time: "June 2024 – January 2025",
     place: "Mumbai",
-    info1: `Led full-stack MERN build for 500+ users, achieving 30% faster
-            load times via code-splitting & lazy-loading.
-            Introduced CI/CD with GitHub Actions + Docker (hours → minutes).`,
-    info2: `Collaborated with UI/UX to improve flows (+25% adoption) and
-            wrote onboarding docs for future maintainers.`,
+    info1: `Faculty Appointment Management System: Developed a MERN-based platform to manage faculty appointments for assessments, re-evaluations, and academic duties, with automated email notifications for real-time updates.`,
+    info2: `FDC Funding & Reimbursement Portal: Built a multi-step form system with dynamic fields, file uploads, and role-based access for funding requests and reimbursements using React, Node.js, Cloudinary, and MongoDB.`,
+    info3: `Implemented secure authentication and role-based access control to ensure data privacy and compliance with institutional policies.`,
+    info4: `Enhanced performance, responsiveness, and scalability through React optimizations, RESTful APIs, and efficient MongoDB queries.`,
   },
+
+];
+
+const collegeTimeline = [
   {
-    type: "@Emfinity KJSCE",
+    type: "Emfinity KJSCE",
     position: "Tech Team Member",
     time: "January 2023 – May 2024",
     place: "Mumbai",
-    info1: `Engineered the club’s Next.js website and Firebase-backed event portal,
-            streamlining registrations for 1000+ participants.
-            Built interactive math-puzzle visualizations with D3.js.`,
-    info2: `Deployed real-time analytics dashboards for event planning.`,
+    info1: `Responsible for maintaining and creating datasets of math problems required for events and workshops.`,
+    info2: `Oversaw all mathematical logic behind events, workshops, and social media series, ensuring quality and accuracy.`,
+    info3: `Participated in daily technical sessions, conducted technical events, and created/solved challenging math problems.`,
+    info4: `Classified and categorized questions for events while brainstorming innovative math competitions and event formats.`,
   },
   {
-    type: "@KJSCE Yugandhar",
+    type: "KJSCE Yugandhar",
     position: "Audio & Media Head",
     time: "January 2023 – May 2024",
     place: "Mumbai",
-    info1: `Directed end-to-end audio production for cultural fest (3000+ attendees),
-            configured digital consoles and wireless systems.`,
-    info2: `Managed promotional media production and editing.`,
+    info1: `Served as the Audio Head, managing end-to-end audio production for cultural fest (3000+ attendees) and backstage setup.`,
+    info2: `Contributed to video editing, promotional content creation, and script writing for cultural events and performances.`,
   },
   {
-    type: "@KJSCE SAHAS",
+    type: "KJSCE SAHAS",
     position: "Tech Head",
     time: "December 2022 – May 2023",
     place: "Mumbai",
-    info1: `Oversaw Django-PostgreSQL web app for event scheduling and finance tracking.
-            Mentored junior developers on Git and Agile sprints.`,
-    info2: `Implemented OAuth 2.0 and role-based access control for security.`,
+    info1: `Handled all technical details and backend systems for council events, including website and data management.`,
+    info2: `Organized and coordinated impactful events like social drives in orphanages, beach cleanups, and awareness campaigns.`,
   },
 ];
+
 
 const riseUp = {
   initial: { y: 50, opacity: 0 },
@@ -68,8 +70,6 @@ const riseUp = {
 
 const Detail = ({ entry }) => {
   const ref = useRef(null);
-
-  // Dynamically get all info keys
   const infoKeys = Object.keys(entry).filter((key) => key.startsWith("info"));
 
   return (
@@ -91,7 +91,6 @@ const Detail = ({ entry }) => {
         <span className="block text-dark/60 dark:text-primaryDark/60 text-sm mb-2">
           {entry.time} | {entry.place}
         </span>
-
         {infoKeys.map((key, idx) => (
           <p key={idx} className="font-medium md:text-sm mt-1">
             ▶ {entry[key]}
@@ -103,29 +102,46 @@ const Detail = ({ entry }) => {
 };
 
 const Experience = () => {
-  const timelineRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
+  const workRef = useRef(null);
+  const collegeRef = useRef(null);
+  const { scrollYProgress: workScroll } = useScroll({
+    target: workRef,
+    offset: ["start end", "center start"],
+  });
+  const { scrollYProgress: collegeScroll } = useScroll({
+    target: collegeRef,
     offset: ["start end", "center start"],
   });
 
   return (
     <section className="mt-0 mb-32 md:mb-24 sm:mb-16">
+      {/* Work Experience */}
       <h3 className="text-center font-bold text-5xl md:text-4xl sm:text-3xl mb-12 md:mb-10">
-        EXPERIENCE
+        WORK EXPERIENCE
       </h3>
-
-      <div
-        ref={timelineRef}
-        className="relative w-full md:w-full mx-auto pl-[60px]"
-      >
-        {/* Timeline Line */}
+      <div ref={workRef} className="relative w-full mx-auto pl-[60px]">
         <motion.span
-          style={{ scaleY: scrollYProgress }}
+          style={{ scaleY: workScroll }}
           className="absolute left-9 md:left-[30px] xs:left-[20px] top-0 w-[4px] md:w-[2px] h-full bg-dark dark:bg-primary origin-top"
         />
         <ul className="flex flex-col items-start xs:ml-2">
-          {timeline.map((entry, idx) => (
+          {workTimeline.map((entry, idx) => (
+            <Detail key={idx} entry={entry} />
+          ))}
+        </ul>
+      </div>
+
+      {/* College Positions */}
+      <h3 className="text-center font-bold text-5xl md:text-4xl sm:text-3xl mt-20 mb-12 md:mb-10">
+        COLLEGE POSITIONS
+      </h3>
+      <div ref={collegeRef} className="relative w-full mx-auto pl-[60px]">
+        <motion.span
+          style={{ scaleY: collegeScroll }}
+          className="absolute left-9 md:left-[30px] xs:left-[20px] top-0 w-[4px] md:w-[2px] h-full bg-dark dark:bg-primary origin-top"
+        />
+        <ul className="flex flex-col items-start xs:ml-2">
+          {collegeTimeline.map((entry, idx) => (
             <Detail key={idx} entry={entry} />
           ))}
         </ul>

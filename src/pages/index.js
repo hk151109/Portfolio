@@ -38,15 +38,20 @@ export default function Home() {
                 className="!text-6xl  !text-left xl:!text-5xl lg:!text-center lg:!text-6xl md:!text-5xl sm:!text-3xl"
               /> */}
               <AnimatedText
-                text="Hi!👋 I'm Harikrishnan"
-                className="text-7xl  !text-left xl:!text-5xl lg:!text-center lg:!text-5xl lg:!mb-1  md:!text-5xl sm:!text-xl sm:!mb-1"
-                fontColour="!text-black-500"
+                text="Hi! 👋 I'm"
+                className="text-5xl font-medium !text-left xl:!text-4xl lg:!text-center lg:!text-4xl lg:!mb-1 md:!text-4xl sm:!text-2xl sm:!mb-1"
               />
+
+              <AnimatedText
+                text="Harikrishnan"
+                className="text-7xl font-extrabold mt-2 !text-left xl:!text-6xl lg:!text-center lg:!text-6xl md:!text-5xl sm:!text-3xl"
+              />
+
               <AnimatedText
                 text="Data Science Engineer | Machine Learning"
-                fontColour="!text-black-500"
-                className="text-3xl !text-left xl:!text-5xl lg:!text-center lg:!text-6xl md:!text-5xl sm:!text-3xl"
+                className="text-2xl font-semibold text-gray-300 mt-2 !text-left xl:!text-xl lg:!text-center lg:!text-2xl md:!text-xl sm:!text-lg"
               />
+
               <ul className="my-4 text-base font-medium md:text-sm sm:text-xs ">
                 <li className="m-1">I&apos;m a Machine Learning and Data Science Engineer passionate about 
                 unraveling data&apos;s secrets. From predictive modeling to deep learning, I thrive on turning data into 

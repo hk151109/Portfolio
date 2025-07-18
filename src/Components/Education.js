@@ -9,7 +9,7 @@ const Details = ({ type, time, place, info }) => {
   return (
     <li
       ref={ref}
-      className="my-8 first:mt-0 last:mb-0 w-[60%] md:w-[80%] mx-auto flex flex-col"
+      className="my-8 first:mt-0 last:mb-0 w-[75%] lg:w-[85%] md:w-[90%] mx-auto flex flex-col" // increased width
     >
       <LiIcon reference={ref} />
 
@@ -41,11 +41,14 @@ const Education = () => {
 
   return (
     <section className="mt-0 mb-32 md:mb-24 sm:mb-16">
-    <h3 className="text-center font-bold text-5xl md:text-4xl sm:text-3xl mb-12 md:mb-10">
-      EDUCATION
-    </h3>
+      <h3 className="text-center font-bold text-5xl md:text-4xl sm:text-3xl mb-12 md:mb-10">
+        EDUCATION
+      </h3>
 
-      <div ref={timelineRef} className="relative w-[75%] lg:w-[90%] md:w-full mx-auto">
+      <div
+        ref={timelineRef}
+        className="relative w-[85%] lg:w-[90%] md:w-full mx-auto" // increased width
+      >
         {/* vertical timeline line */}
         <motion.span
           style={{ scaleY: scrollYProgress }}
@@ -54,24 +57,34 @@ const Education = () => {
 
         <ul className="flex flex-col items-start xs:ml-2">
           <Details
-            type="B.Tech in Computer Engineering"
-            time="2022 – 2026"
-            place="KJ Somaiya School of Engineering"
+            type="B.Tech in Computer Engineering"
+            time="2022 – 2026"
+            place="KJ Somaiya School of Engineering"
             info={
               <>
+                Pursuing a Bachelor of Technology in Computer Engineering with a CGPA of 9.26/10, expected to graduate in 2026.
+                <br /><br />
                 Honours Degree in Data Science & Analytics.
-                <br />
-                Related coursework: AI, ML, Data Science, DBMS, DSA,
-                Operating Systems, Computer Networks, Web Dev.
+                <br /><br />
+                Key coursework: Artificial Intelligence, Machine Learning, Data Science, 
+                Database Management Systems (DBMS), Data Structures & Algorithms (DSA), 
+                Operating Systems, Computer Networks, and Full-Stack Development (MERN).
               </>
             }
           />
 
           <Details
-            type="12th Board (CBSE)"
+            type="Higher Secondary Education (12th Board – HSC)"
             time="2022"
-            place="MSBSHSE, Maharashtra"
-            info={<>Mumbai, Maharashtra, India</>}
+            place="Ratanbai Walbai Junior College, Maharashtra"
+            info={<>Scored 83% – Mumbai, Maharashtra, India</>}
+          />
+
+          <Details
+            type="Secondary Education (10th Board – CBSE)"
+            time="2020"
+            place="Holy Angels’ School"
+            info={<>Scored 96.6% – Mumbai, Maharashtra, India</>}
           />
         </ul>
       </div>

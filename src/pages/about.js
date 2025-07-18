@@ -39,18 +39,9 @@ const About = () => (
             </h2>
 
             <p className="font-medium">
-              Harikrishnan Gopal is a final‑year B.Tech Computer Engineering student
-              (CGPA 9.26) passionate about data science and machine learning. He has
-              delivered Azure‑hosted NLP micro‑services at CDSL, built MERN‑stack
-              applications at KJSCE‑SDC, and maintains open‑source projects like
-              FinCredible and StockSage. Comfortable across Python, cloud platforms,
-              and modern web stacks, he enjoys turning complex data into real‑world
-              impact.
-
-              lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-              lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
+              I’m Harikrishnan Gopal, a Computer Engineering student at K. J. Somaiya School of Engineering with a deep passion for data science, machine learning, and artificial intelligence. With a CGPA of 9.26, I have combined academic excellence with hands-on experience, building AI-driven systems that solve real-world problems. My journey spans projects like FinCredible, where I integrated real-time market data with LSTM models for return prediction, and SafeView, a browser extension leveraging a fine-tuned MobileNet-V3 CNN for NSFW content moderation. I have also worked as an AI/ML Intern at CDSL, where I developed NLP pipelines, risk-scoring models, and dashboards used by compliance teams.
+              <br /><br />
+              Beyond AI, I enjoy building scalable web platforms with MERN and FastAPI, cloud-based architectures on AWS, GCP, and Azure, and advanced data visualizations using Plotly and Tableau. I thrive at the intersection of technology and creativity—whether it’s designing technical workflows, leading math-tech events as part of Emfinity, or crafting interactive solutions. I’m also an avid chess player and reader, always eager to learn, innovate, and contribute to meaningful data-driven innovations.
             </p>
           </div>
 
