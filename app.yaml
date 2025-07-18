@@ -2,7 +2,7 @@
 
 # Specifies the runtime environment. A recent Node.js LTS version is recommended.
 # App Engine will automatically use 'npm start' to run your application.
-runtime: nodejs18
+runtime: nodejs22
 
 # Handlers define how App Engine routes requests to your application.
 handlers:
