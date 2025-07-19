@@ -7,3 +7,6 @@ steps:
     args: ['app', 'deploy', '--quiet']
 timeout: '900s'
 
+options:
+  logging: CLOUD_LOGGING_ONLY
+  default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
