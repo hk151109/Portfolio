@@ -192,9 +192,9 @@ const Navbar = () => {
       )}
 
       {/* Logo in center */}
-      <div className="absolute top-2 left-[50%] translate-x-[-50%]">
+      {/* <div className="absolute top-2 left-[50%] translate-x-[-50%]">
         <Logo />
-      </div>
+      </div> */}
     </header>
   );
 };
