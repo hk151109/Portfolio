@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harikrishnan Gopal - Interactive Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A single-page dashboard design with a sticky top navigation for easy access to different content blocks. The structure includes: 1) A hero section for immediate impact. 2) An interactive skills dashboard with a filterable chart to quickly assess technical capabilities. 3) A tabbed, card-based section for Projects and Internships, using modals to show details without cluttering the page. 4) A chronological timeline for Education and Experience. 5) Standard sections for certifications and contact. This non-linear, interactive structure is chosen over a simple linear resume to allow recruiters to quickly navigate to their areas of interest, making for a more efficient and engaging user experience. -->
+    <!-- Visualization & Content Choices: 
+        - Profile/Education/Internships -> Goal: Inform/Change -> Method: Vertical Timeline (HTML/CSS) -> Interaction: Scroll-based navigation -> Justification: Shows career progression chronologically and clearly.
+        - Technical Skills -> Goal: Compare/Organize -> Method: Polar Area Chart (Chart.js) -> Interaction: Buttons to filter categories and show skill list -> Justification: Provides a more creative and visually engaging overview of skill distribution.
+        - Projects/Internships Details -> Goal: Inform -> Method: Modals (HTML/JS) -> Interaction: Click on cards to open -> Justification: Keeps the main layout clean while providing deep-dive information on demand.
+        - General Content -> Goal: Inform -> Method: Styled Text Blocks (HTML/Tailwind) -> Interaction: N/A -> Justification: Clean, readable presentation for static information.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #333;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 450px;
+            width: 100%;
+            max-width: 450px;
+        }
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 40;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-backdrop.visible {
+            opacity: 1;
+        }
+        .modal-content {
+            background-color: #FFFFFF;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            z-index: 50;
+            transform: scale(0.95);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal-backdrop.visible .modal-content {
+            transform: scale(1);
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4A90E2;
+            transition: width 0.3s;
+        }
+        .nav-link:hover {
+            color: #4A90E2;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .project-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .tech-tag {
+            background-color: #E0E7FF;
+            color: #3730A3;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-30 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">Harikrishnan Gopal</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="nav-link text-gray-600">About</a>
+                <a href="#skills" class="nav-link text-gray-600">Skills</a>
+                <a href="#experience" class="nav-link text-gray-600">Experience</a>
+                <a href="#projects" class="nav-link text-gray-600">Projects</a>
+                <a href="#education" class="nav-link text-gray-600">Education</a>
+            </div>
+             <button id="mobile-menu-button" class="md:hidden p-2 rounded-md">
+                <span class="text-2xl">☰</span>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white">
+            <a href="#about" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">About</a>
+            <a href="#skills" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">Skills</a>
+            <a href="#experience" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">Experience</a>
+            <a href="#projects" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">Projects</a>
+            <a href="#education" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">Education</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-6">
+        <section id="about" class="text-center my-16">
+            <h2 class="text-4xl font-bold text-gray-900">Harikrishnan Gopal</h2>
+            <p class="text-xl text-gray-600 mt-2">B.Tech Computer Engineering Student</p>
+            <p class="max-w-3xl mx-auto mt-6 text-gray-700">
+                I am a Computer Engineering student specializing in data science and machine learning, with a portfolio of projects, internships, and hackathon experience. I work comfortably with cloud platforms and modern web development stacks, allowing me to design and deploy complete, end-to-end solutions.
+            </p>
+            <div class="mt-8 flex justify-center space-x-6">
+                 <a href="mailto:harikrishnan.g@somaiya.edu" class="text-blue-600 hover:underline">Email</a>
+                 <a href="https://www.linkedin.com/in/harikrishnangopal/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">LinkedIn</a>
+                 <a href="https://github.com/hk151109" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">GitHub</a>
+                 <a href="https://hk151109.github.io/Harikrishnan_Portfolio/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Portfolio</a>
+            </div>
+        </section>
+
+        <section id="skills" class="my-20">
+            <h3 class="text-3xl font-bold text-center mb-4 text-gray-900">Technical Competencies</h3>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">
+                This interactive chart displays the breadth of my technical skills across different domains. Click on a category in the legend or a segment on the chart to see the specific technologies I've worked with in that area.
+            </p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+                <div class="chart-container">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+                <div id="skill-details" class="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="font-bold text-lg mb-4">Skill Details</h4>
+                    <p id="skill-prompt" class="text-gray-500">Select a category to see the list of skills.</p>
+                    <div id="skill-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="my-20">
+            <h3 class="text-3xl font-bold text-center mb-12 text-gray-900">Professional Experience</h3>
+             <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">
+                My internships have provided me with hands-on experience in building and deploying real-world AI/ML and software engineering solutions. Below are highlights from my key roles. Click on any card to view detailed responsibilities and achievements.
+            </p>
+            <div id="experience-cards" class="grid md:grid-cols-2 gap-8">
+            </div>
+        </section>
+
+        <section id="projects" class="my-20">
+            <h3 class="text-3xl font-bold text-center mb-12 text-gray-900">Project Portfolio</h3>
+             <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">
+                I have developed a diverse range of projects, from financial analysis tools to content moderation systems, showcasing my ability to apply technology to solve complex problems. Explore my work below by clicking on a project card.
+            </p>
+            <div id="project-cards" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+        </section>
+
+        <section id="education" class="my-20">
+            <h3 class="text-3xl font-bold text-center mb-12 text-gray-900">Education & Certifications</h3>
+             <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">My academic background in Computer Engineering is complemented by professional certifications from industry leaders, providing a strong foundation in both theoretical concepts and practical application.</p>
+            <div class="grid md:grid-cols-2 gap-16">
+                <div>
+                    <h4 class="text-2xl font-semibold mb-6 text-center">Academic Journey</h4>
+                    <div id="education-timeline" class="relative border-l-2 border-blue-200 ml-4">
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-2xl font-semibold mb-6 text-center">Certifications</h4>
+                    <ul id="certifications-list" class="space-y-4">
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto text-center">
+            <p>Get in touch:</p>
+            <p class="mt-2"><a href="mailto:harikrishnangopal0411@gmail.com" class="hover:underline">harikrishnangopal0411@gmail.com</a></p>
+            <p class="mt-1">Mobile: 9372296398</p>
+            <div class="mt-4 text-sm text-gray-400">
+                &copy; 2025 Harikrishnan Gopal. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <div id="modal-container" class="hidden modal-backdrop"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const data = {
+                skills: {
+                    'Programming': ['Python', 'R', 'Java', 'C'],
+                    'Data Visualization': ['Matplotlib', 'Seaborn', 'Plotly', 'Tableau', 'Power BI'],
+                    'Data Analysis & ML': ['NumPy', 'Pandas', 'Scikit-learn', 'Stats Models', 'TensorFlow', 'Keras', 'PyTorch', 'OpenCV'],
+                    'AI': ['Hugging Face Transformers', 'LangChain', 'NLTK'],
+                    'Web Dev & APIs': ['MERN Stack', 'Flask', 'FastAPI', 'REST API', 'HTML', 'CSS', 'JavaScript'],
+                    'Databases': ['MySQL', 'PostgreSQL', 'SQL', 'NoSQL (MongoDB)'],
+                    'Cloud & Big Data': ['Apache Spark', 'Microsoft Azure', 'Amazon AWS', 'Google Cloud Platform'],
+                    'Tools': ['Git', 'Jupyter Notebook', 'Docker']
+                },
+                experiences: [
+                    {
+                        id: 'exp1',
+                        title: 'AI/ML Intern',
+                        company: 'CDSL - Central Depository Services (India) Limited',
+                        period: 'May - July 2025',
+                        details: [
+                            'Built an Azure-hosted micro-services pipeline that ingests and cleans investor-grievance & help-desk records, standardising 40+ text fields with Python/SQL for downstream modelling.',
+                            'Fine-tuned BERT, ROBERTa, and Sentence-Transformers classifiers to auto-tag complaint category and escalation probability, with F1-score of 0.87 and accelerating response SLA.',
+                            'Risk-Score Model: merged four years of complaint frequency and turnaround metrics to predict a risk score for every DP/broker, powered by a matplotlib dashboard used by compliance teams for early-warning alerts.',
+                            'Collaborated with Risk, Grievance Redressal, and Back-Office teams to gather requirements, present insights, and iterate on ML solutions, strengthening cross-functional communication skills.'
+                        ]
+                    },
+                    {
+                        id: 'exp2',
+                        title: 'Software Engineering Intern',
+                        company: 'Software Development Centre (KJSCE-SDC)',
+                        period: 'May 2024 - Dec 2024',
+                        details: [
+                            'Developed two MERN stack web applications to streamline faculty management: one for faculty appointments (examiner assignments, paper setting, evaluations) and another for faculty reimbursements (submission/approval workflows)',
+                            'Focused on seamless integration, high performance, and a responsive, user-friendly experience to optimize operational efficiency.'
+                        ]
+                    }
+                ],
+                projects: [
+                    { id: 'proj1', title: 'FinCredible', technologies: ['MongoDB', 'LSTM', 'FastAPI', 'Plotly'], description: ['Integrated real-time market ticks and 10K+ daily news articles in MongoDB to deliver user-specific feeds and portfolio analytics.', 'Built gradient-boosted & LSTM predictive models that improved 1-day return-prediction, serving recommendations through a FastAPI micro-service.', 'Visualized risk metrics and price-impact signals with Plotly dashboards, enabling investors to act faster.'], github: 'https://github.com/hk151109' },
+                    { id: 'proj2', title: 'StockSage', technologies: ['Flask', 'TensorFlow', 'REST API', 'Matplotlib'], description: ['Built a Flask micro-service that streams live OHLC data from Alpha Vantage, feeds it to an LSTM (TensorFlow/Keras), and serves rolling price forecasts via REST API.', 'Visualized actual vs predicted prices and confidence bands with Matplotlib on a responsive dark-theme UI, giving traders an at-a-glance decision aid.'], github: 'https://github.com/hk151109' },
+                    { id: 'proj3', title: 'SQL Natural Language Query Assistant', technologies: ['Streamlit', 'Gemini API', 'SQL', 'MySQL'], description: ['Built a Streamlit tool that converts plain-English questions into parameterised SQL via Google Gemini embeddings, enabling instant data exploration for non-technical users.', 'Implemented seamless CSV upload with automatic table creation and a live MySQL connection for real-time database querying and results display.'], github: 'https://github.com/hk151109' },
+                    { id: 'proj4', title: 'UniqScan', technologies: ['FastAPI', 'MERN', 'NLTK', 'ROBERTA'], description: ['Developed a full-stack web platform (FastAPI + MERN) that extracts text with NLTK and OCR, encodes it using a fine-tuned ROBERTA model, and flags plagiarised or LLM-generated content with 93% F1-score.', 'Provided a virtual-classroom dashboard and on-demand visualization reports using Matplotlib, enabling educators to review submissions and uphold academic integrity.'], github: 'https://github.com/hk151109' },
+                    { id: 'proj5', title: 'SafeView', technologies: ['Python', 'MobileNet-V3', 'TensorFlow.js'], description: ['Designed the full pipeline by collecting 500k labelled images, automating data-cleaning & augmentation in Python and fine-tuned a MobileNet-V3 CNN on NVIDIA A100 GPUs, boosting F1-score from 86% (base) to 92%.', 'Built the browser add-on (Chrome) in JavaScript + TensorFlow.js, to classify all online web content in <50 ms, along with adjustable blur, whitelist rules.'], github: 'https://github.com/hk151109' },
+                    { id: 'proj6', title: 'Datathon Finalist Project', technologies: ['Machine Learning', 'Predictive Analytics'], description: ['Developed a machine learning-based system to predict customer churn in subscription-based services, leveraging predictive analytics to identify high-risk customers.', 'Recommended targeted retention strategies.'], github: 'https://github.com/hk151109'},
+                    { id: 'proj7', title: 'IIT KGP Hackathon Semi-Finalist', technologies: ['AI', 'DocBERT', 'XML-CNN'], description: ['Built an Al pipeline that evaluates manuscript "publishability" and suggests ideal conferences by combining DocBERT embeddings with an XML-CNN multi-label classifier.', 'Engineered a real-time streaming workflow to ingest new papers, perform on-the-fly scoring, and deliver recommendations within seconds.'], github: 'https://github.com/hk151109'}
+                ],
+                education: [
+                    { year: '2026', title: 'B.Tech in Computer Engineering', institution: 'K J Somaiya School of Engineering - CGPA 9.26' },
+                    { year: '2022', title: 'HSC', institution: 'Ratanbai Walbai Junior College - 83%' },
+                    { year: '2020', title: '10th Class (CBSE)', institution: 'Holy Angels\' School - 96.6%' }
+                ],
+                certifications: [
+                    { name: 'Google Project Management Professional Certificate', issuer: 'Google' },
+                    { name: 'Architecting Solutions on AWS', issuer: 'AWS' },
+                    { name: 'Database Structures and Management with MySQL', issuer: 'Meta' },
+                    { name: 'Python for Data Science, AI & Development', issuer: 'IBM' }
+                ]
+            };
+
+            const skillsChartCtx = document.getElementById('skillsChart').getContext('2d');
+            let skillsChart;
+            
+            function updateSkillDetails(category) {
+                const skillDetailsContainer = document.getElementById('skill-details');
+                const titleElement = skillDetailsContainer.querySelector('h4');
+                const skillListContainer = document.getElementById('skill-list');
+                const prompt = document.getElementById('skill-prompt');
+
+                titleElement.textContent = `${category} Skills`;
+                prompt.classList.add('hidden');
+                skillListContainer.innerHTML = '';
+                
+                const skills = data.skills[category];
+                const list = document.createElement('ul');
+                list.className = 'space-y-2';
+                skills.forEach(skill => {
+                    const item = document.createElement('li');
+                    item.className = 'bg-gray-100 p-2 rounded-md text-sm text-gray-800 animate-fade-in';
+                    item.textContent = skill;
+                    list.appendChild(item);
+                });
+                skillListContainer.appendChild(list);
+            }
+
+            function renderSkillsChart() {
+                const chartLabels = Object.keys(data.skills);
+                const chartData = chartLabels.map(key => data.skills[key].length);
+                
+                const backgroundColors = [
+                    'rgba(74, 144, 226, 0.7)', 'rgba(245, 166, 35, 0.7)', 'rgba(126, 211, 33, 0.7)',
+                    'rgba(208, 2, 27, 0.7)', 'rgba(189, 16, 224, 0.7)', 'rgba(80, 227, 194, 0.7)',
+                    'rgba(248, 231, 28, 0.7)', 'rgba(75, 85, 99, 0.7)'
+                ];
+                const borderColors = backgroundColors.map(color => color.replace('0.7', '1'));
+
+                if (skillsChart) {
+                    skillsChart.destroy();
+                }
+
+                skillsChart = new Chart(skillsChartCtx, {
+                    type: 'polarArea',
+                    data: {
+                        labels: chartLabels,
+                        datasets: [{
+                            label: 'Skills',
+                            data: chartData,
+                            backgroundColor: backgroundColors,
+                            borderColor: borderColors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                pointLabels: { display: false },
+                                grid: { color: 'rgba(200, 200, 200, 0.2)' }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    boxWidth: 20,
+                                    padding: 15
+                                },
+                                onClick: (e, legendItem) => {
+                                    updateSkillDetails(legendItem.text);
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        label += context.raw + ' skills';
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        onClick: (e, elements) => {
+                            if (elements.length > 0) {
+                                const index = elements[0].index;
+                                const category = skillsChart.data.labels[index];
+                                updateSkillDetails(category);
+                            }
+                        }
+                    }
+                });
+            }
+
+            const experienceContainer = document.getElementById('experience-cards');
+            data.experiences.forEach(exp => {
+                const card = document.createElement('div');
+                card.className = 'project-card bg-white p-6 rounded-lg shadow-md cursor-pointer';
+                card.innerHTML = `<h4 class="text-xl font-bold">${exp.title}</h4>
+                                  <p class="text-md text-gray-600">${exp.company}</p>
+                                  <p class="text-sm text-gray-500 mt-1">${exp.period}</p>`;
+                card.addEventListener('click', () => showModal(exp, 'experience'));
+                experienceContainer.appendChild(card);
+            });
+
+            const projectsContainer = document.getElementById('project-cards');
+            data.projects.forEach(proj => {
+                const card = document.createElement('div');
+                card.className = 'project-card bg-white p-6 rounded-lg shadow-md cursor-pointer flex flex-col h-full';
+                card.innerHTML = `
+                    <div class="flex-grow">
+                        <h4 class="text-xl font-bold">${proj.title}</h4>
+                        <div class="flex flex-wrap gap-2 my-3">
+                            ${proj.technologies.map(tag => `<span class="tech-tag px-2 py-1 rounded-full">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                    <a href="#" class="text-blue-500 hover:underline mt-4 inline-block font-semibold">View Details</a>`;
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showModal(proj, 'project');
+                });
+                projectsContainer.appendChild(card);
+            });
+            
+            const educationContainer = document.getElementById('education-timeline');
+            data.education.forEach(edu => {
+                const item = document.createElement('div');
+                item.className = 'mb-8 ml-6';
+                item.innerHTML = `
+                    <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white">
+                        <span class="text-blue-800 text-xs">${edu.year.slice(-2)}</span>
+                    </span>
+                    <h5 class="font-semibold text-lg text-gray-900">${edu.title}</h5>
+                    <p class="text-base font-normal text-gray-500">${edu.institution}</p>
+                `;
+                educationContainer.appendChild(item);
+            });
+
+            const certsContainer = document.getElementById('certifications-list');
+            data.certifications.forEach(cert => {
+                const item = document.createElement('li');
+                item.className = 'bg-white p-4 rounded-lg shadow-sm';
+                item.innerHTML = `
+                    <p class="font-semibold text-gray-800">${cert.name}</p>
+                    <p class="text-sm text-gray-500">Issued by: ${cert.issuer}</p>
+                `;
+                certsContainer.appendChild(item);
+            });
+
+            const modalContainer = document.getElementById('modal-container');
+            function showModal(itemData, type) {
+                let contentHTML = '';
+
+                if (type === 'experience') {
+                    contentHTML = `
+                        <h3 class="text-2xl font-bold mb-2">${itemData.title}</h3>
+                        <p class="text-lg text-gray-600 mb-1">${itemData.company}</p>
+                        <p class="text-sm text-gray-500 mb-4">${itemData.period}</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            ${itemData.details.map(d => `<li>${d}</li>`).join('')}
+                        </ul>
+                    `;
+                } else if (type === 'project') {
+                    contentHTML = `
+                        <h3 class="text-2xl font-bold mb-2">${itemData.title}</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 mb-4">
+                            ${itemData.description.map(d => `<li>${d}</li>`).join('')}
+                        </ul>
+                        <a href="${itemData.github}" target="_blank" rel="noopener noreferrer" class="inline-block bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 transition">View on GitHub</a>
+                    `;
+                }
+                
+                modalContainer.innerHTML = `
+                    <div class="modal-content">
+                        <button id="close-modal" class="absolute top-4 right-4 text-2xl font-bold text-gray-600 hover:text-gray-900">&times;</button>
+                        ${contentHTML}
+                    </div>`;
+                
+                modalContainer.classList.remove('hidden');
+                setTimeout(() => modalContainer.classList.add('visible'), 10);
+
+                document.getElementById('close-modal').addEventListener('click', closeModal);
+                modalContainer.addEventListener('click', (e) => {
+                    if (e.target === e.currentTarget) closeModal();
+                });
+            }
+
+            function closeModal() {
+                modalContainer.classList.remove('visible');
+                setTimeout(() => {
+                    modalContainer.classList.add('hidden');
+                    modalContainer.innerHTML = '';
+                }, 300);
+            }
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === "Escape" && modalContainer.classList.contains('visible')) {
+                    closeModal();
+                }
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            renderSkillsChart();
+        });
+    </script>
+</body>
+</html>

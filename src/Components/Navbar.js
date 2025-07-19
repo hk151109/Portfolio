@@ -65,7 +65,7 @@ const Navbar = () => {
         <span
           className={`bg-dark transition-all duration-0.6 dark:bg-light block h-0.5 rounded-sm w-6 -translate-y-0.5 ${
             isOpen ? `rotate-45 translate-y-2` : `-translate-y-0.5`
-          } `}
+          }`}
         ></span>
         <span
           className={`bg-dark transition-all duration-0.6 dark:bg-light block h-0.5 rounded-sm w-6 my-0.5 ${
@@ -86,8 +86,16 @@ const Navbar = () => {
           <CustomLink href="/about" title={"About"} className={"mx-4"} />
           <CustomLink href="/projects" title={"Projects"} className={"ml-4"} />
           <CustomLink href="/experience" title={"Experience"} className={"ml-4"} />
-          {/* New Contact link */}
+          {/* Contact link */}
           <CustomLink href="/contact" title={"Contact"} className={"ml-6"} />
+          {/* New Plain View (Resume) link */}
+          <a
+            href="/resume.html" // Path to your resume HTML file in the public folder
+            target="_blank"
+            className="ml-6 text-dark dark:text-light hover:text-primary transition duration-300"
+          >
+            Plain View
+          </a>
         </nav>
         <nav className="flex item-center justify-center flex-wrap">
           <motion.a
@@ -133,12 +141,12 @@ const Navbar = () => {
             <CustomMobileLink toggle={handlleClick} href="/about" title={"About"} />
             <CustomMobileLink toggle={handlleClick} href="/projects" title={"Projects"} />
             <CustomMobileLink toggle={handlleClick} href="/experience" title={"Experience"} />
-            {/* New Contact mobile link */}
             <CustomMobileLink
               toggle={handlleClick}
               href="/contact"
               title={"Contact"}
             />
+            <CustomMobileLink toggle={handlleClick} href="/resume.html" title={"Plain View"} />
           </nav>
           <nav className="flex item-center justify-center flex-wrap mt-2">
             <motion.a
@@ -159,6 +167,14 @@ const Navbar = () => {
             >
               <LinkedInIcon />
             </motion.a>
+            {/* Mobile Resume Link */}
+            {/* <motion.a
+              href="/resume.html" // Path to your resume HTML file in the public folder
+              target="_blank"
+              className="ml-4 text-light dark:text-dark hover:text-primary transition duration-300"
+            >
+              Plain View
+            </motion.a> */}
             <button
               className={`ml-4 flex items-center justify-center rounded-full p-1 ${
                 mode === "light" ? "bg-light text-dark" : "bg-dark text-light"
