@@ -1,25 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const useThemeSwitcher = () => {
-  const preferDarkQuery = "(prefer-dark-scheme : dark)";
+  const preferDarkQuery = "(prefers-color-scheme: dark)"; // Correct media query for dark mode
 
-  const [mode, setMode] = useState("");
+  // Always default to dark mode initially
+  const [mode, setMode] = useState("dark");
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(preferDarkQuery);
     const userPref = window.localStorage.getItem("theme");
 
     const handleChange = () => {
+      // If there's no user preference, it will always set dark mode
+      let check = "dark"; // Set to dark by default
+      setMode(check);
+      document.documentElement.classList.add("dark"); // Always apply dark mode initially
+
+      // If there's a user preference in localStorage, use it
       if (userPref) {
-        let check = userPref === "light" ? "dark" : "dark";
-        setMode(check);
-        if (check === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      }else{
-        let check = mediaQuery.matches ? "dark" : "light";
+        check = userPref === "light" ? "light" : "dark";
         setMode(check);
         if (check === "dark") {
           document.documentElement.classList.add("dark");
@@ -28,31 +27,28 @@ const useThemeSwitcher = () => {
         }
       }
     };
-    handleChange()
+
+    handleChange();
 
     mediaQuery.addEventListener("change", handleChange);
 
-    return ()=>{
-        mediaQuery.removeEventListener("change",handleChange)
-    }
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
   }, []);
 
   useEffect(() => {
-    if(mode==="dark"){
-        window.localStorage.setItem("theme","dark")
-        document.documentElement.classList.add("dark");
-
-    }if(mode==="light"){
-        window.localStorage.setItem("theme","light")
-        document.documentElement.classList.remove("dark");
+    // Always default to dark mode unless explicitly set to light
+    if (mode === "dark") {
+      window.localStorage.setItem("theme", "dark");
+      document.documentElement.classList.add("dark");
+    } else {
+      window.localStorage.setItem("theme", "light");
+      document.documentElement.classList.remove("dark");
     }
+  }, [mode]);
 
-
-    
-  }, [mode])
-  
-
-  return [mode,setMode];
+  return [mode, setMode];
 };
 
 export default useThemeSwitcher;
