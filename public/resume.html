@@ -8,207 +8,414 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutrals -->
-    <!-- Application Structure Plan: A single-page dashboard design with a sticky top navigation for easy access to different content blocks. The structure includes: 1) A hero section for immediate impact. 2) An interactive skills dashboard with a filterable chart to quickly assess technical capabilities. 3) A tabbed, card-based section for Projects and Internships, using modals to show details without cluttering the page. 4) A chronological timeline for Education and Experience. 5) Standard sections for certifications and contact. This non-linear, interactive structure is chosen over a simple linear resume to allow recruiters to quickly navigate to their areas of interest, making for a more efficient and engaging user experience. -->
-    <!-- Visualization & Content Choices: 
-        - Profile/Education/Internships -> Goal: Inform/Change -> Method: Vertical Timeline (HTML/CSS) -> Interaction: Scroll-based navigation -> Justification: Shows career progression chronologically and clearly.
-        - Technical Skills -> Goal: Compare/Organize -> Method: Polar Area Chart (Chart.js) -> Interaction: Buttons to filter categories and show skill list -> Justification: Provides a more creative and visually engaging overview of skill distribution.
-        - Projects/Internships Details -> Goal: Inform -> Method: Modals (HTML/JS) -> Interaction: Click on cards to open -> Justification: Keeps the main layout clean while providing deep-dive information on demand.
-        - General Content -> Goal: Inform -> Method: Styled Text Blocks (HTML/Tailwind) -> Interaction: N/A -> Justification: Clean, readable presentation for static information.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F8F7F4;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             color: #333;
+            scroll-behavior: smooth;
         }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
         .chart-container {
             position: relative;
             margin: auto;
-            height: 450px;
+            height: 400px;
             width: 100%;
-            max-width: 450px;
+            max-width: 400px;
         }
+        
         .modal-backdrop {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            z-index: 40;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 50;
             display: flex;
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transition: opacity 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
         }
+        
         .modal-backdrop.visible {
             opacity: 1;
         }
+        
         .modal-content {
             background-color: #FFFFFF;
             padding: 2rem;
-            border-radius: 0.5rem;
+            border-radius: 1rem;
             width: 90%;
-            max-width: 650px;
+            max-width: 700px;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
-            z-index: 50;
-            transform: scale(0.95);
-            transition: transform 0.3s ease-in-out;
+            z-index: 60;
+            transform: scale(0.9) translateY(50px);
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
+        
         .modal-backdrop.visible .modal-content {
-            transform: scale(1);
+            transform: scale(1) translateY(0);
         }
+        
         .nav-link {
             position: relative;
-            transition: color 0.3s;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
         }
+        
         .nav-link::after {
             content: '';
             position: absolute;
             width: 0;
             height: 2px;
-            bottom: -4px;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #4A90E2;
-            transition: width 0.3s;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
         }
+        
         .nav-link:hover {
-            color: #4A90E2;
+            color: #667eea;
+            background-color: rgba(102, 126, 234, 0.1);
         }
+        
         .nav-link:hover::after {
-            width: 100%;
+            width: 80%;
         }
-        .project-card {
-            transition: transform 0.3s, box-shadow 0.3s;
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
+        
         .tech-tag {
-            background-color: #E0E7FF;
-            color: #3730A3;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
             font-size: 0.75rem;
             font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            display: inline-block;
+            margin: 0.125rem;
+            transition: transform 0.2s ease;
+        }
+        
+        .tech-tag:hover {
+            transform: scale(1.05);
+        }
+        
+        .floating-action {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 40;
+        }
+        
+        .floating-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 1.5rem;
+            width: 2px;
+            height: calc(100% + 1rem);
+            background: linear-gradient(180deg, #667eea, transparent);
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        
+        .skill-category-btn {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .skill-category-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .skill-category-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .floating-action {
+                bottom: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
         }
     </style>
 </head>
 <body class="antialiased">
 
-    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-30 shadow-sm">
+    <!-- Progress Bar -->
+    <div id="progress-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-purple-600 z-50 transition-all duration-300"></div>
+
+    <header class="glass-effect sticky top-0 z-30 shadow-lg">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-gray-800">Harikrishnan Gopal</h1>
-            <div class="hidden md:flex space-x-8">
-                <a href="#about" class="nav-link text-gray-600">About</a>
-                <a href="#skills" class="nav-link text-gray-600">Skills</a>
-                <a href="#experience" class="nav-link text-gray-600">Experience</a>
-                <a href="#projects" class="nav-link text-gray-600">Projects</a>
-                <a href="#education" class="nav-link text-gray-600">Education</a>
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Harikrishnan Gopal
+            </h1>
+            <div class="hidden md:flex space-x-2">
+                <a href="#about" class="nav-link text-gray-700">About</a>
+                <a href="#skills" class="nav-link text-gray-700">Skills</a>
+                <a href="#experience" class="nav-link text-gray-700">Experience</a>
+                <a href="#projects" class="nav-link text-gray-700">Projects</a>
+                <a href="#education" class="nav-link text-gray-700">Education</a>
             </div>
-             <button id="mobile-menu-button" class="md:hidden p-2 rounded-md">
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md hover:bg-gray-100 transition-colors">
                 <span class="text-2xl">☰</span>
             </button>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white">
-            <a href="#about" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">About</a>
-            <a href="#skills" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">Skills</a>
-            <a href="#experience" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">Experience</a>
-            <a href="#projects" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">Projects</a>
-            <a href="#education" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">Education</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-sm">
+            <a href="#about" class="block py-3 px-6 text-gray-700 hover:bg-gray-100 transition-colors">About</a>
+            <a href="#skills" class="block py-3 px-6 text-gray-700 hover:bg-gray-100 transition-colors">Skills</a>
+            <a href="#experience" class="block py-3 px-6 text-gray-700 hover:bg-gray-100 transition-colors">Experience</a>
+            <a href="#projects" class="block py-3 px-6 text-gray-700 hover:bg-gray-100 transition-colors">Projects</a>
+            <a href="#education" class="block py-3 px-6 text-gray-700 hover:bg-gray-100 transition-colors">Education</a>
         </div>
     </header>
 
     <main class="container mx-auto p-6">
-        <section id="about" class="text-center my-16">
-            <h2 class="text-4xl font-bold text-gray-900">Harikrishnan Gopal</h2>
-            <p class="text-xl text-gray-600 mt-2">B.Tech Computer Engineering Student</p>
-            <p class="max-w-3xl mx-auto mt-6 text-gray-700">
-                I am a Computer Engineering student specializing in data science and machine learning, with a portfolio of projects, internships, and hackathon experience. I work comfortably with cloud platforms and modern web development stacks, allowing me to design and deploy complete, end-to-end solutions.
-            </p>
-            <div class="mt-8 flex justify-center space-x-6">
-                 <a href="mailto:harikrishnan.g@somaiya.edu" class="text-blue-600 hover:underline">Email</a>
-                 <a href="https://www.linkedin.com/in/harikrishnangopal/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">LinkedIn</a>
-                 <a href="https://github.com/hk151109" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">GitHub</a>
-                 <a href="https://hk151109.github.io/Harikrishnan_Portfolio/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Portfolio</a>
-            </div>
-        </section>
-
-        <section id="skills" class="my-20">
-            <h3 class="text-3xl font-bold text-center mb-4 text-gray-900">Technical Competencies</h3>
-            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">
-                This interactive chart displays the breadth of my technical skills across different domains. Click on a category in the legend or a segment on the chart to see the specific technologies I've worked with in that area.
-            </p>
-            <div class="flex flex-col md:flex-row items-center justify-center gap-8">
-                <div class="chart-container">
-                    <canvas id="skillsChart"></canvas>
+        <!-- Hero Section with Enhanced Styling -->
+        <section id="about" class="text-center py-16 relative">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl -z-10"></div>
+            <div class="py-8 px-8">
+                <div class="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto mb-8 flex items-center justify-center text-white text-4xl font-bold">
+                    HG
                 </div>
-                <div id="skill-details" class="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-md">
-                    <h4 class="font-bold text-lg mb-4">Skill Details</h4>
-                    <p id="skill-prompt" class="text-gray-500">Select a category to see the list of skills.</p>
-                    <div id="skill-list"></div>
+                <h2 class="text-5xl font-bold text-gray-900 mb-4">Harikrishnan Gopal</h2>
+                <p class="text-2xl text-gray-600 mb-6 font-light">B.Tech Computer Engineering Student</p>
+                <div class="max-w-4xl mx-auto">
+                    <p class="text-lg text-gray-700 leading-relaxed mb-8">
+                        I am a Computer Engineering student specializing in data science and machine learning, with a portfolio of projects, internships, and hackathon experience. I work comfortably with cloud platforms and modern web development stacks, allowing me to design and deploy complete, end-to-end solutions.
+                    </p>
+                </div>
+                <div class="flex justify-center space-x-6 flex-wrap gap-4">
+                    <a href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&source=mailto&to=harikrishnangopal0411@gmail.com" target="_blank" class="bg-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all duration-300 text-gray-700 hover:text-blue-600 font-medium">
+                        📧 Email
+                    </a>
+                    <a href="https://www.linkedin.com/in/harikrishnangopal/" target="_blank" rel="noopener noreferrer" class="bg-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all duration-300 text-gray-700 hover:text-blue-600 font-medium">
+                        💼 LinkedIn
+                    </a>
+                    <a href="https://github.com/hk151109" target="_blank" rel="noopener noreferrer" class="bg-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all duration-300 text-gray-700 hover:text-blue-600 font-medium">
+                        🔗 GitHub
+                    </a>
+                    <a href="https://portfolio-nextjs-466315.uc.r.appspot.com/" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all duration-300 font-medium">
+                        🌐 Portfolio
+                    </a>
                 </div>
             </div>
         </section>
 
-        <section id="experience" class="my-20">
-            <h3 class="text-3xl font-bold text-center mb-12 text-gray-900">Professional Experience</h3>
-             <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">
-                My internships have provided me with hands-on experience in building and deploying real-world AI/ML and software engineering solutions. Below are highlights from my key roles. Click on any card to view detailed responsibilities and achievements.
-            </p>
-            <div id="experience-cards" class="grid md:grid-cols-2 gap-8">
-            </div>
-        </section>
 
-        <section id="projects" class="my-20">
-            <h3 class="text-3xl font-bold text-center mb-12 text-gray-900">Project Portfolio</h3>
-             <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">
-                I have developed a diverse range of projects, from financial analysis tools to content moderation systems, showcasing my ability to apply technology to solve complex problems. Explore my work below by clicking on a project card.
-            </p>
-            <div id="project-cards" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Enhanced Skills Section -->
+        <section id="skills" class="my-24">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold text-gray-900 mb-4">Technical Competencies</h3>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Explore my technical skills across different domains. Click on categories or chart segments to dive deeper.
+                </p>
             </div>
-        </section>
-
-        <section id="education" class="my-20">
-            <h3 class="text-3xl font-bold text-center mb-12 text-gray-900">Education & Certifications</h3>
-             <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">My academic background in Computer Engineering is complemented by professional certifications from industry leaders, providing a strong foundation in both theoretical concepts and practical application.</p>
-            <div class="grid md:grid-cols-2 gap-16">
-                <div>
-                    <h4 class="text-2xl font-semibold mb-6 text-center">Academic Journey</h4>
-                    <div id="education-timeline" class="relative border-l-2 border-blue-200 ml-4">
+            
+            <!-- Skill Category Buttons -->
+            <div id="skill-categories" class="flex flex-wrap justify-center gap-3 mb-12">
+                <!-- Categories will be populated by JavaScript -->
+            </div>
+            
+            <div class="flex flex-col lg:flex-row items-start justify-center gap-12">
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="chart-container">
+                        <canvas id="skillsChart"></canvas>
                     </div>
                 </div>
-                <div>
-                    <h4 class="text-2xl font-semibold mb-6 text-center">Certifications</h4>
-                    <ul id="certifications-list" class="space-y-4">
-                    </ul>
+                <div id="skill-details" class="w-full lg:w-96 bg-white p-8 rounded-2xl shadow-lg">
+                    <h4 class="font-bold text-xl mb-6 text-gray-900">Skill Details</h4>
+                    <div id="skill-prompt" class="text-center py-12">
+                        <div class="text-6xl mb-4">🎯</div>
+                        <p class="text-gray-500">Select a category to explore specific skills</p>
+                    </div>
+                    <div id="skill-list" class="hidden"></div>
                 </div>
             </div>
         </section>
-        
+
+        <!-- Enhanced Experience Section -->
+        <section id="experience" class="my-24">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold text-gray-900 mb-4">Professional Experience</h3>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Real-world experience in AI/ML and software engineering. Click any card for detailed insights.
+                </p>
+            </div>
+            <div id="experience-cards" class="grid lg:grid-cols-2 gap-8">
+                <!-- Experience cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Enhanced Projects Section -->
+        <section id="projects" class="my-24">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold text-gray-900 mb-4">Project Portfolio</h3>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Diverse projects showcasing problem-solving with cutting-edge technology.
+                </p>
+            </div>
+            
+            <!-- Project Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button class="project-filter-btn active px-6 py-2 rounded-full border-2 border-blue-500 bg-blue-500 text-white font-medium transition-all duration-300" data-filter="all">
+                    All Projects
+                </button>
+                <button class="project-filter-btn px-6 py-2 rounded-full border-2 border-gray-300 text-gray-600 font-medium transition-all duration-300 hover:border-blue-500" data-filter="ml">
+                    Machine Learning
+                </button>
+                <button class="project-filter-btn px-6 py-2 rounded-full border-2 border-gray-300 text-gray-600 font-medium transition-all duration-300 hover:border-blue-500" data-filter="web">
+                    Web Development
+                </button>
+                <button class="project-filter-btn px-6 py-2 rounded-full border-2 border-gray-300 text-gray-600 font-medium transition-all duration-300 hover:border-blue-500" data-filter="ai">
+                    AI/NLP
+                </button>
+            </div>
+            
+            <div id="project-cards" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Enhanced Education Section -->
+        <section id="education" class="my-24">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold text-gray-900 mb-4">Education & Certifications</h3>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Strong academic foundation complemented by industry certifications.
+                </p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-16">
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h4 class="text-2xl font-semibold mb-8 text-center text-gray-900">Academic Journey</h4>
+                    <div id="education-timeline">
+                        <!-- Timeline items will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h4 class="text-2xl font-semibold mb-8 text-center text-gray-900">Certifications</h4>
+                    <div id="certifications-list" class="space-y-4">
+                        <!-- Certification items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer class="bg-gray-800 text-white py-8">
+    <!-- Enhanced Footer -->
+    <footer class="gradient-bg text-white py-12">
         <div class="container mx-auto text-center">
-            <p>Get in touch:</p>
-            <p class="mt-2"><a href="mailto:harikrishnangopal0411@gmail.com" class="hover:underline">harikrishnangopal0411@gmail.com</a></p>
-            <p class="mt-1">Mobile: 9372296398</p>
-            <div class="mt-4 text-sm text-gray-400">
-                &copy; 2025 Harikrishnan Gopal. All Rights Reserved.
+            <h3 class="text-2xl font-bold mb-4">Let's Connect</h3>
+            <p class="text-lg mb-6">Ready to collaborate on exciting projects?</p>
+            <div class="flex justify-center space-x-8 mb-8">
+                <a href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&source=mailto&to=harikrishnangopal0411@gmail.com" class="hover:text-blue-200 transition-colors text-lg">
+                    harikrishnangopal0411@gmail.com
+                </a>
+                <span class="text-blue-200">|</span>
+                <span class="text-lg">+91 9372296398</span>
+            </div>
+            <div class="text-sm text-blue-100">
+                &copy; 2025 Harikrishnan Gopal. Crafted with passion.
             </div>
         </div>
     </footer>
 
+    <!-- Floating Action Button -->
+    <button id="scroll-to-top" class="floating-action hidden">
+        ↑
+    </button>
+
+    <!-- Enhanced Modal -->
     <div id="modal-container" class="hidden modal-backdrop"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Enhanced data structure with categories
             const data = {
                 skills: {
                     'Programming': ['Python', 'R', 'Java', 'C'],
@@ -226,6 +433,7 @@
                         title: 'AI/ML Intern',
                         company: 'CDSL - Central Depository Services (India) Limited',
                         period: 'May - July 2025',
+                        icon: '🤖',
                         details: [
                             'Built an Azure-hosted micro-services pipeline that ingests and cleans investor-grievance & help-desk records, standardising 40+ text fields with Python/SQL for downstream modelling.',
                             'Fine-tuned BERT, ROBERTa, and Sentence-Transformers classifiers to auto-tag complaint category and escalation probability, with F1-score of 0.87 and accelerating response SLA.',
@@ -238,6 +446,7 @@
                         title: 'Software Engineering Intern',
                         company: 'Software Development Centre (KJSCE-SDC)',
                         period: 'May 2024 - Dec 2024',
+                        icon: '💻',
                         details: [
                             'Developed two MERN stack web applications to streamline faculty management: one for faculty appointments (examiner assignments, paper setting, evaluations) and another for faculty reimbursements (submission/approval workflows)',
                             'Focused on seamless integration, high performance, and a responsive, user-friendly experience to optimize operational efficiency.'
@@ -245,29 +454,113 @@
                     }
                 ],
                 projects: [
-                    { id: 'proj1', title: 'FinCredible', technologies: ['MongoDB', 'LSTM', 'FastAPI', 'Plotly'], description: ['Integrated real-time market ticks and 10K+ daily news articles in MongoDB to deliver user-specific feeds and portfolio analytics.', 'Built gradient-boosted & LSTM predictive models that improved 1-day return-prediction, serving recommendations through a FastAPI micro-service.', 'Visualized risk metrics and price-impact signals with Plotly dashboards, enabling investors to act faster.'], github: 'https://github.com/hk151109' },
-                    { id: 'proj2', title: 'StockSage', technologies: ['Flask', 'TensorFlow', 'REST API', 'Matplotlib'], description: ['Built a Flask micro-service that streams live OHLC data from Alpha Vantage, feeds it to an LSTM (TensorFlow/Keras), and serves rolling price forecasts via REST API.', 'Visualized actual vs predicted prices and confidence bands with Matplotlib on a responsive dark-theme UI, giving traders an at-a-glance decision aid.'], github: 'https://github.com/hk151109' },
-                    { id: 'proj3', title: 'SQL Natural Language Query Assistant', technologies: ['Streamlit', 'Gemini API', 'SQL', 'MySQL'], description: ['Built a Streamlit tool that converts plain-English questions into parameterised SQL via Google Gemini embeddings, enabling instant data exploration for non-technical users.', 'Implemented seamless CSV upload with automatic table creation and a live MySQL connection for real-time database querying and results display.'], github: 'https://github.com/hk151109' },
-                    { id: 'proj4', title: 'UniqScan', technologies: ['FastAPI', 'MERN', 'NLTK', 'ROBERTA'], description: ['Developed a full-stack web platform (FastAPI + MERN) that extracts text with NLTK and OCR, encodes it using a fine-tuned ROBERTA model, and flags plagiarised or LLM-generated content with 93% F1-score.', 'Provided a virtual-classroom dashboard and on-demand visualization reports using Matplotlib, enabling educators to review submissions and uphold academic integrity.'], github: 'https://github.com/hk151109' },
-                    { id: 'proj5', title: 'SafeView', technologies: ['Python', 'MobileNet-V3', 'TensorFlow.js'], description: ['Designed the full pipeline by collecting 500k labelled images, automating data-cleaning & augmentation in Python and fine-tuned a MobileNet-V3 CNN on NVIDIA A100 GPUs, boosting F1-score from 86% (base) to 92%.', 'Built the browser add-on (Chrome) in JavaScript + TensorFlow.js, to classify all online web content in <50 ms, along with adjustable blur, whitelist rules.'], github: 'https://github.com/hk151109' },
-                    { id: 'proj6', title: 'Datathon Finalist Project', technologies: ['Machine Learning', 'Predictive Analytics'], description: ['Developed a machine learning-based system to predict customer churn in subscription-based services, leveraging predictive analytics to identify high-risk customers.', 'Recommended targeted retention strategies.'], github: 'https://github.com/hk151109'},
-                    { id: 'proj7', title: 'IIT KGP Hackathon Semi-Finalist', technologies: ['AI', 'DocBERT', 'XML-CNN'], description: ['Built an Al pipeline that evaluates manuscript "publishability" and suggests ideal conferences by combining DocBERT embeddings with an XML-CNN multi-label classifier.', 'Engineered a real-time streaming workflow to ingest new papers, perform on-the-fly scoring, and deliver recommendations within seconds.'], github: 'https://github.com/hk151109'}
+                    { 
+                        id: 'proj1', 
+                        title: 'FinCredible', 
+                        technologies: ['MongoDB', 'LSTM', 'FastAPI', 'Plotly'], 
+                        category: 'ml',
+                        icon: '📈',
+                        description: ['Integrated real-time market ticks and 10K+ daily news articles in MongoDB to deliver user-specific feeds and portfolio analytics.', 'Built gradient-boosted & LSTM predictive models that improved 1-day return-prediction, serving recommendations through a FastAPI micro-service.', 'Visualized risk metrics and price-impact signals with Plotly dashboards, enabling investors to act faster.'], 
+                        github: 'https://github.com/hk151109' 
+                    },
+                    { 
+                        id: 'proj2', 
+                        title: 'StockSage', 
+                        technologies: ['Flask', 'TensorFlow', 'REST API', 'Matplotlib'], 
+                        category: 'ml',
+                        icon: '📊',
+                        description: ['Built a Flask micro-service that streams live OHLC data from Alpha Vantage, feeds it to an LSTM (TensorFlow/Keras), and serves rolling price forecasts via REST API.', 'Visualized actual vs predicted prices and confidence bands with Matplotlib on a responsive dark-theme UI, giving traders an at-a-glance decision aid.'], 
+                        github: 'https://github.com/hk151109' 
+                    },
+                    { 
+                        id: 'proj3', 
+                        title: 'SQL Natural Language Query Assistant', 
+                        technologies: ['Streamlit', 'Gemini API', 'SQL', 'MySQL'], 
+                        category: 'ai',
+                        icon: '🗣️',
+                        description: ['Built a Streamlit tool that converts plain-English questions into parameterised SQL via Google Gemini embeddings, enabling instant data exploration for non-technical users.', 'Implemented seamless CSV upload with automatic table creation and a live MySQL connection for real-time database querying and results display.'], 
+                        github: 'https://github.com/hk151109' 
+                    },
+                    { 
+                        id: 'proj4', 
+                        title: 'UniqScan', 
+                        technologies: ['FastAPI', 'MERN', 'NLTK', 'ROBERTA'], 
+                        category: 'ai',
+                        icon: '🔍',
+                        description: ['Developed a full-stack web platform (FastAPI + MERN) that extracts text with NLTK and OCR, encodes it using a fine-tuned ROBERTA model, and flags plagiarised or LLM-generated content with 93% F1-score.', 'Provided a virtual-classroom dashboard and on-demand visualization reports using Matplotlib, enabling educators to review submissions and uphold academic integrity.'], 
+                        github: 'https://github.com/hk151109' 
+                    },
+                    { 
+                        id: 'proj5', 
+                        title: 'SafeView', 
+                        technologies: ['Python', 'MobileNet-V3', 'TensorFlow.js'], 
+                        category: 'ml',
+                        icon: '🛡️',
+                        description: ['Designed the full pipeline by collecting 500k labelled images, automating data-cleaning & augmentation in Python and fine-tuned a MobileNet-V3 CNN on NVIDIA A100 GPUs, boosting F1-score from 86% (base) to 92%.', 'Built the browser add-on (Chrome) in JavaScript + TensorFlow.js, to classify all online web content in <50 ms, along with adjustable blur, whitelist rules.'], 
+                        github: 'https://github.com/hk151109' 
+                    },
+                    { 
+                        id: 'proj6', 
+                        title: 'Datathon Finalist Project', 
+                        technologies: ['Machine Learning', 'Predictive Analytics'], 
+                        category: 'ml',
+                        icon: '🏆',
+                        description: ['Developed a machine learning-based system to predict customer churn in subscription-based services, leveraging predictive analytics to identify high-risk customers.', 'Recommended targeted retention strategies.'], 
+                        github: 'https://github.com/hk151109'
+                    },
+                    { 
+                        id: 'proj7', 
+                        title: 'IIT KGP Hackathon Semi-Finalist', 
+                        technologies: ['AI', 'DocBERT', 'XML-CNN'], 
+                        category: 'ai',
+                        icon: '🎯',
+                        description: ['Built an Al pipeline that evaluates manuscript "publishability" and suggests ideal conferences by combining DocBERT embeddings with an XML-CNN multi-label classifier.', 'Engineered a real-time streaming workflow to ingest new papers, perform on-the-fly scoring, and deliver recommendations within seconds.'], 
+                        github: 'https://github.com/hk151109'
+                    }
                 ],
                 education: [
-                    { year: '2026', title: 'B.Tech in Computer Engineering', institution: 'K J Somaiya School of Engineering - CGPA 9.26' },
-                    { year: '2022', title: 'HSC', institution: 'Ratanbai Walbai Junior College - 83%' },
-                    { year: '2020', title: '10th Class (CBSE)', institution: 'Holy Angels\' School - 96.6%' }
+                    { year: '2026', title: 'B.Tech in Computer Engineering', institution: 'K J Somaiya School of Engineering', grade: 'CGPA 9.26' },
+                    { year: '2022', title: 'HSC', institution: 'Ratanbai Walbai Junior College', grade: '83%' },
+                    { year: '2020', title: '10th Class (CBSE)', institution: 'Holy Angels\' School', grade: '96.6%' }
                 ],
                 certifications: [
-                    { name: 'Google Project Management Professional Certificate', issuer: 'Google' },
-                    { name: 'Architecting Solutions on AWS', issuer: 'AWS' },
-                    { name: 'Database Structures and Management with MySQL', issuer: 'Meta' },
-                    { name: 'Python for Data Science, AI & Development', issuer: 'IBM' }
+                    { name: 'Google Project Management Professional Certificate', issuer: 'Google', icon: '📊' },
+                    { name: 'Architecting Solutions on AWS', issuer: 'AWS', icon: '☁️' },
+                    { name: 'Database Structures and Management with MySQL', issuer: 'Meta', icon: '🗄️' },
+                    { name: 'Python for Data Science, AI & Development', issuer: 'IBM', icon: '🐍' }
                 ]
             };
 
+            // Progress bar functionality
+            function updateProgressBar() {
+                const scrollTop = window.pageYOffset;
+                const docHeight = document.body.scrollHeight - window.innerHeight;
+                const scrollPercent = (scrollTop / docHeight) * 100;
+                document.getElementById('progress-bar').style.width = scrollPercent + '%';
+            }
+
+            window.addEventListener('scroll', updateProgressBar);
+
+            // Enhanced Skills Chart
             const skillsChartCtx = document.getElementById('skillsChart').getContext('2d');
             let skillsChart;
+            
+            function createSkillCategoryButtons() {
+                const container = document.getElementById('skill-categories');
+                const categories = Object.keys(data.skills);
+                
+                categories.forEach((category, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'skill-category-btn px-4 py-2 rounded-full bg-white text-gray-700 font-medium shadow-md';
+                    button.textContent = category;
+                    button.addEventListener('click', () => {
+                        document.querySelectorAll('.skill-category-btn').forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        updateSkillDetails(category);
+                    });
+                    container.appendChild(button);
+                });
+            }
             
             function updateSkillDetails(category) {
                 const skillDetailsContainer = document.getElementById('skill-details');
@@ -275,32 +568,38 @@
                 const skillListContainer = document.getElementById('skill-list');
                 const prompt = document.getElementById('skill-prompt');
 
-                titleElement.textContent = `${category} Skills`;
+                titleElement.innerHTML = `<span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">${category}</span> Skills`;
                 prompt.classList.add('hidden');
+                skillListContainer.classList.remove('hidden');
                 skillListContainer.innerHTML = '';
                 
                 const skills = data.skills[category];
-                const list = document.createElement('ul');
-                list.className = 'space-y-2';
-                skills.forEach(skill => {
-                    const item = document.createElement('li');
-                    item.className = 'bg-gray-100 p-2 rounded-md text-sm text-gray-800 animate-fade-in';
-                    item.textContent = skill;
-                    list.appendChild(item);
+                const grid = document.createElement('div');
+                grid.className = 'grid grid-cols-1 gap-3';
+                
+                skills.forEach((skill, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-xl border border-blue-100 animate-fade-in transform transition-all duration-300 hover:scale-105';
+                    item.style.animationDelay = `${index * 0.1}s`;
+                    item.innerHTML = `
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+                            <span class="text-gray-800 font-medium">${skill}</span>
+                        </div>
+                    `;
+                    grid.appendChild(item);
                 });
-                skillListContainer.appendChild(list);
+                skillListContainer.appendChild(grid);
             }
 
             function renderSkillsChart() {
                 const chartLabels = Object.keys(data.skills);
                 const chartData = chartLabels.map(key => data.skills[key].length);
                 
-                const backgroundColors = [
-                    'rgba(74, 144, 226, 0.7)', 'rgba(245, 166, 35, 0.7)', 'rgba(126, 211, 33, 0.7)',
-                    'rgba(208, 2, 27, 0.7)', 'rgba(189, 16, 224, 0.7)', 'rgba(80, 227, 194, 0.7)',
-                    'rgba(248, 231, 28, 0.7)', 'rgba(75, 85, 99, 0.7)'
+                const colors = [
+                    '#667eea', '#764ba2', '#f093fb', '#f5576c',
+                    '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'
                 ];
-                const borderColors = backgroundColors.map(color => color.replace('0.7', '1'));
 
                 if (skillsChart) {
                     skillsChart.destroy();
@@ -313,42 +612,44 @@
                         datasets: [{
                             label: 'Skills',
                             data: chartData,
-                            backgroundColor: backgroundColors,
-                            borderColor: borderColors,
-                            borderWidth: 1
+                            backgroundColor: colors.map(color => color + '80'),
+                            borderColor: colors,
+                            borderWidth: 2
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        scales: {
-                            r: {
-                                pointLabels: { display: false },
-                                grid: { color: 'rgba(200, 200, 200, 0.2)' }
-                            }
-                        },
                         plugins: {
                             legend: {
-                                position: 'right',
+                                position: 'bottom',
                                 labels: {
-                                    boxWidth: 20,
-                                    padding: 15
+                                    boxWidth: 15,
+                                    padding: 20,
+                                    font: { size: 12 },
+                                    usePointStyle: true
                                 },
                                 onClick: (e, legendItem) => {
                                     updateSkillDetails(legendItem.text);
                                 }
                             },
                             tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleColor: 'white',
+                                bodyColor: 'white',
+                                cornerRadius: 10,
                                 callbacks: {
                                     label: function(context) {
-                                        let label = context.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        label += context.raw + ' skills';
-                                        return label;
+                                        return `${context.label}: ${context.raw} skills`;
                                     }
                                 }
+                            }
+                        },
+                        scales: {
+                            r: {
+                                pointLabels: { display: false },
+                                grid: { color: 'rgba(200, 200, 200, 0.3)' },
+                                ticks: { display: false }
                             }
                         },
                         onClick: (e, elements) => {
@@ -362,87 +663,172 @@
                 });
             }
 
-            const experienceContainer = document.getElementById('experience-cards');
-            data.experiences.forEach(exp => {
-                const card = document.createElement('div');
-                card.className = 'project-card bg-white p-6 rounded-lg shadow-md cursor-pointer';
-                card.innerHTML = `<h4 class="text-xl font-bold">${exp.title}</h4>
-                                  <p class="text-md text-gray-600">${exp.company}</p>
-                                  <p class="text-sm text-gray-500 mt-1">${exp.period}</p>`;
-                card.addEventListener('click', () => showModal(exp, 'experience'));
-                experienceContainer.appendChild(card);
-            });
-
-            const projectsContainer = document.getElementById('project-cards');
-            data.projects.forEach(proj => {
-                const card = document.createElement('div');
-                card.className = 'project-card bg-white p-6 rounded-lg shadow-md cursor-pointer flex flex-col h-full';
-                card.innerHTML = `
-                    <div class="flex-grow">
-                        <h4 class="text-xl font-bold">${proj.title}</h4>
-                        <div class="flex flex-wrap gap-2 my-3">
-                            ${proj.technologies.map(tag => `<span class="tech-tag px-2 py-1 rounded-full">${tag}</span>`).join('')}
+            // Enhanced Experience Cards
+            function renderExperienceCards() {
+                const container = document.getElementById('experience-cards');
+                data.experiences.forEach(exp => {
+                    const card = document.createElement('div');
+                    card.className = 'card-hover bg-white p-8 rounded-2xl shadow-lg border border-gray-100';
+                    card.innerHTML = `
+                        <div class="flex items-start space-x-4 mb-4">
+                            <div class="text-4xl">${exp.icon}</div>
+                            <div class="flex-1">
+                                <h4 class="text-2xl font-bold text-gray-900 mb-2">${exp.title}</h4>
+                                <p class="text-lg text-gray-600 mb-1">${exp.company}</p>
+                                <p class="text-sm text-gray-500">${exp.period}</p>
+                            </div>
                         </div>
-                    </div>
-                    <a href="#" class="text-blue-500 hover:underline mt-4 inline-block font-semibold">View Details</a>`;
-                card.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    showModal(proj, 'project');
+                        <div class="mt-6">
+                            <button class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transition-all duration-300">
+                                View Details →
+                            </button>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => showModal(exp, 'experience'));
+                    container.appendChild(card);
                 });
-                projectsContainer.appendChild(card);
+            }
+
+            // Enhanced Project Cards with Filtering
+            let currentFilter = 'all';
+            
+            function renderProjectCards(filterCategory = 'all') {
+                const container = document.getElementById('project-cards');
+                container.innerHTML = '';
+                
+                const filteredProjects = filterCategory === 'all' 
+                    ? data.projects 
+                    : data.projects.filter(proj => proj.category === filterCategory);
+                
+                filteredProjects.forEach((proj, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'card-hover bg-white p-6 rounded-2xl shadow-lg border border-gray-100 flex flex-col h-full animate-fade-in';
+                    card.style.animationDelay = `${index * 0.1}s`;
+                    card.innerHTML = `
+                        <div class="flex items-start space-x-3 mb-4">
+                            <div class="text-3xl">${proj.icon}</div>
+                            <h4 class="text-xl font-bold text-gray-900 flex-1">${proj.title}</h4>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            ${proj.technologies.map(tag => `<span class="tech-tag">${tag}</span>`).join('')}
+                        </div>
+                        <div class="flex-grow"></div>
+                        <button class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-medium hover:shadow-lg transition-all duration-300 mt-4">
+                            Explore Project →
+                        </button>
+                    `;
+                    card.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        showModal(proj, 'project');
+                    });
+                    container.appendChild(card);
+                });
+            }
+            
+            // Project Filter Functionality
+            document.querySelectorAll('.project-filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.project-filter-btn').forEach(b => {
+                        b.classList.remove('active', 'bg-blue-500', 'text-white');
+                        b.classList.add('border-gray-300', 'text-gray-600');
+                    });
+                    btn.classList.add('active', 'bg-blue-500', 'text-white');
+                    btn.classList.remove('border-gray-300', 'text-gray-600');
+                    
+                    const filter = btn.dataset.filter;
+                    renderProjectCards(filter);
+                });
             });
             
-            const educationContainer = document.getElementById('education-timeline');
-            data.education.forEach(edu => {
-                const item = document.createElement('div');
-                item.className = 'mb-8 ml-6';
-                item.innerHTML = `
-                    <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white">
-                        <span class="text-blue-800 text-xs">${edu.year.slice(-2)}</span>
-                    </span>
-                    <h5 class="font-semibold text-lg text-gray-900">${edu.title}</h5>
-                    <p class="text-base font-normal text-gray-500">${edu.institution}</p>
-                `;
-                educationContainer.appendChild(item);
-            });
+            // Enhanced Education Timeline
+            function renderEducationTimeline() {
+                const container = document.getElementById('education-timeline');
+                data.education.forEach((edu, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'timeline-item animate-fade-in';
+                    item.style.animationDelay = `${index * 0.2}s`;
+                    item.innerHTML = `
+                        <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl border border-blue-100">
+                            <div class="flex justify-between items-start mb-2">
+                                <h5 class="font-bold text-lg text-gray-900">${edu.title}</h5>
+                                <span class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-medium">${edu.year}</span>
+                            </div>
+                            <p class="text-gray-600 mb-2">${edu.institution}</p>
+                            <p class="text-sm font-semibold text-green-600">${edu.grade}</p>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            }
 
-            const certsContainer = document.getElementById('certifications-list');
-            data.certifications.forEach(cert => {
-                const item = document.createElement('li');
-                item.className = 'bg-white p-4 rounded-lg shadow-sm';
-                item.innerHTML = `
-                    <p class="font-semibold text-gray-800">${cert.name}</p>
-                    <p class="text-sm text-gray-500">Issued by: ${cert.issuer}</p>
-                `;
-                certsContainer.appendChild(item);
-            });
+            // Enhanced Certifications
+            function renderCertifications() {
+                const container = document.getElementById('certifications-list');
+                data.certifications.forEach((cert, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl border border-blue-100 hover:shadow-md transition-all duration-300 animate-fade-in';
+                    item.style.animationDelay = `${index * 0.1}s`;
+                    item.innerHTML = `
+                        <div class="flex items-start space-x-4">
+                            <div class="text-2xl">${cert.icon}</div>
+                            <div class="flex-1">
+                                <p class="font-bold text-gray-900 mb-1">${cert.name}</p>
+                                <p class="text-sm text-gray-600">Issued by: <span class="font-medium">${cert.issuer}</span></p>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            }
 
+            // Enhanced Modal
             const modalContainer = document.getElementById('modal-container');
             function showModal(itemData, type) {
                 let contentHTML = '';
 
                 if (type === 'experience') {
                     contentHTML = `
-                        <h3 class="text-2xl font-bold mb-2">${itemData.title}</h3>
-                        <p class="text-lg text-gray-600 mb-1">${itemData.company}</p>
-                        <p class="text-sm text-gray-500 mb-4">${itemData.period}</p>
-                        <ul class="list-disc list-inside space-y-2 text-gray-700">
-                            ${itemData.details.map(d => `<li>${d}</li>`).join('')}
-                        </ul>
+                        <div class="text-center mb-6">
+                            <div class="text-6xl mb-4">${itemData.icon}</div>
+                            <h3 class="text-3xl font-bold text-gray-900 mb-2">${itemData.title}</h3>
+                            <p class="text-xl text-gray-600 mb-1">${itemData.company}</p>
+                            <p class="text-gray-500">${itemData.period}</p>
+                        </div>
+                        <div class="space-y-4">
+                            ${itemData.details.map(d => `
+                                <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                    <p class="text-gray-700">${d}</p>
+                                </div>
+                            `).join('')}
+                        </div>
                     `;
                 } else if (type === 'project') {
                     contentHTML = `
-                        <h3 class="text-2xl font-bold mb-2">${itemData.title}</h3>
-                        <ul class="list-disc list-inside space-y-2 text-gray-700 mb-4">
-                            ${itemData.description.map(d => `<li>${d}</li>`).join('')}
-                        </ul>
-                        <a href="${itemData.github}" target="_blank" rel="noopener noreferrer" class="inline-block bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 transition">View on GitHub</a>
+                        <div class="text-center mb-6">
+                            <div class="text-6xl mb-4">${itemData.icon}</div>
+                            <h3 class="text-3xl font-bold text-gray-900 mb-4">${itemData.title}</h3>
+                            <div class="flex flex-wrap justify-center gap-2 mb-6">
+                                ${itemData.technologies.map(tag => `<span class="tech-tag">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div class="space-y-4 mb-6">
+                            ${itemData.description.map(d => `
+                                <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-purple-500">
+                                    <p class="text-gray-700">${d}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="text-center">
+                            <a href="${itemData.github}" target="_blank" rel="noopener noreferrer" class="inline-block bg-gradient-to-r from-gray-700 to-gray-900 text-white px-8 py-3 rounded-xl font-medium hover:shadow-lg transition-all duration-300">
+                                🔗 View on GitHub
+                            </a>
+                        </div>
                     `;
                 }
                 
                 modalContainer.innerHTML = `
                     <div class="modal-content">
-                        <button id="close-modal" class="absolute top-4 right-4 text-2xl font-bold text-gray-600 hover:text-gray-900">&times;</button>
+                        <button id="close-modal" class="absolute top-6 right-6 text-3xl font-bold text-gray-400 hover:text-gray-600 transition-colors">×</button>
                         ${contentHTML}
                     </div>`;
                 
@@ -462,13 +848,22 @@
                     modalContainer.innerHTML = '';
                 }, 300);
             }
-            
-            document.addEventListener('keydown', (e) => {
-                if (e.key === "Escape" && modalContainer.classList.contains('visible')) {
-                    closeModal();
+
+            // Floating Action Button
+            const scrollToTopBtn = document.getElementById('scroll-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 500) {
+                    scrollToTopBtn.classList.remove('hidden');
+                } else {
+                    scrollToTopBtn.classList.add('hidden');
                 }
             });
 
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Mobile Menu
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             mobileMenuButton.addEventListener('click', () => {
@@ -481,7 +876,35 @@
                 });
             });
 
+            // Keyboard Navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === "Escape" && modalContainer.classList.contains('visible')) {
+                    closeModal();
+                }
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Initialize everything
+            createSkillCategoryButtons();
             renderSkillsChart();
+            renderExperienceCards();
+            renderProjectCards();
+            renderEducationTimeline();
+            renderCertifications();
         });
     </script>
 </body>
