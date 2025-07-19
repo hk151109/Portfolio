@@ -31,7 +31,6 @@ const Footer = () => {
           Say Hello on LinkedIn<span className="no-underline">😊</span>{" "}
         </Link>
       </Layout>
-      <HireMe/>
    
     </footer>
   );

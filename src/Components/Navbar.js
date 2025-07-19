@@ -14,8 +14,7 @@ const CustomLink = ({ href, title, className }) => {
       <span
         className={`h-[2px] inline-block bg-dark absolute left-0 -bottom-0.5
         group-hover:w-full transition-[width] ease-in-out duration-300 dark:bg-primary
-        ${router.asPath === href ? "w-full" : "w-0"}
-      `}
+        ${router.asPath === href ? "w-full" : "w-0"}`}
       >
         &nbsp;
       </span>
@@ -40,8 +39,7 @@ const CustomMobileLink = ({ href, title, className = "", toggle }) => {
       <span
         className={`h-[2px] inline-block bg-primary absolute left-0 -bottom-0.5
         group-hover:w-full transition-[width] ease-in-out duration-300 dark:bg-primary
-        ${router.asPath === href ? "w-full" : "w-0"}
-      `}
+        ${router.asPath === href ? "w-full" : "w-0"}`}
       >
         &nbsp;
       </span>
@@ -88,22 +86,8 @@ const Navbar = () => {
           <CustomLink href="/about" title={"About"} className={"mx-4"} />
           <CustomLink href="/projects" title={"Projects"} className={"ml-4"} />
           <CustomLink href="/experience" title={"Experience"} className={"ml-4"} />
-          <a
-            href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&source=mailto&to=harikrishnangopal0411@gmail.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ml-6 relative group"
-          >
-            Contact
-            <span
-              className={`h-[2px] inline-block bg-dark absolute left-0 -bottom-0.5
-                group-hover:w-full transition-[width] ease-in-out duration-300 dark:bg-primary
-              `}
-            >
-              &nbsp;
-            </span>
-          </a>
-
+          {/* New Contact link */}
+          <CustomLink href="/contact" title={"Contact"} className={"ml-6"} />
         </nav>
         <nav className="flex item-center justify-center flex-wrap">
           <motion.a
@@ -149,9 +133,10 @@ const Navbar = () => {
             <CustomMobileLink toggle={handlleClick} href="/about" title={"About"} />
             <CustomMobileLink toggle={handlleClick} href="/projects" title={"Projects"} />
             <CustomMobileLink toggle={handlleClick} href="/experience" title={"Experience"} />
+            {/* New Contact mobile link */}
             <CustomMobileLink
               toggle={handlleClick}
-              href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&source=mailto&to=harikrishnangopal0411@gmail.com"
+              href="/contact"
               title={"Contact"}
             />
           </nav>
