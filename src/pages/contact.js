@@ -60,7 +60,7 @@ const Contact = () => {
         <Layout className="pt-8">
           {/* Headline */}
           <AnimatedText
-            text="Let's Get in Touch!"
+            text="Let&#39;s Get in Touch!"
             className="mb-16 lg:!text-7xl md:!text-6xl sm:!text-4xl text-center"
           />
 
@@ -117,7 +117,7 @@ const Contact = () => {
                     name="title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="What's this about?"
+                    placeholder="What&#39;s this about?"
                     className={inputClasses}
                     required
                   />
@@ -170,7 +170,7 @@ const Contact = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <p className="text-green-800 dark:text-green-300 font-medium text-lg">
-                      Message sent successfully! I'll get back to you soon.
+                      Message sent successfully! I&#39;ll get back to you soon.
                     </p>
                   </div>
                 </div>
@@ -230,7 +230,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold">Call - +91 9372296398</h3>
-                      <p className="text-sm opacity-80">Let's talk</p>
+                      <p className="text-sm opacity-80">Let&#39;s talk</p>
                     </div>
                   </div>
                 </a>
@@ -257,7 +257,6 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Contact Info - Removed since it's now at the top */}
           </div>
         </Layout>
       </main>
