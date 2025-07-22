@@ -200,7 +200,7 @@ const Contact = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-w-2xl mx-auto px-2">
                 {/* Email Card */}
                 <a 
-                  href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&source=mailto&to=harikrishnan0411@gmail.com" 
+                  href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&source=mailto&to=harikrishnangopal0411@gmail.com" 
                   className="group bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 p-3 sm:p-4 rounded-xl border border-blue-200 dark:border-blue-800 transition-all duration-300 hover:shadow-md active:scale-95 touch-manipulation"
                 >
                   <div className="flex items-center space-x-3 text-blue-700 dark:text-blue-300">
@@ -212,7 +212,7 @@ const Contact = () => {
                     <div className="min-w-0 flex-1">
                       <h3 className="font-semibold text-sm sm:text-base truncate">Email</h3>
                       <p className="text-xs sm:text-sm opacity-80 hidden sm:block">Drop a line</p>
-                      <p className="text-xs opacity-80 sm:hidden">harikrishnan0411@gmail.com</p>
+                      <p className="text-xs opacity-80 sm:hidden">harikrishnangopal0411@gmail.com</p>
                     </div>
                   </div>
                 </a>
