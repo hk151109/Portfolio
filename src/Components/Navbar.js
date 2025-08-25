@@ -56,7 +56,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="z-10 w-full px-32 lg:px-16 md:px-12 sm:px-6 font-medium py-8 flex items-center justify-between dark:text-light relative">
+  <header className="z-10 w-full px-32 lg:px-16 md:px-12 sm:px-6 font-medium py-6 flex items-center justify-between dark:text-light relative">
       {/* Hamburger */}
       <button
         className="flex-col justify-center items-center hidden z-30 lg:flex"
@@ -81,11 +81,12 @@ const Navbar = () => {
 
       {/* Large screen */}
       <div className="w-full flex justify-between items-center lg:hidden">
-        <nav>
+        <nav className="flex items-center">
           <CustomLink href="/" title={"Home"} className={"mr-4"} />
           <CustomLink href="/about" title={"About"} className={"mx-4"} />
           <CustomLink href="/projects" title={"Projects"} className={"ml-4"} />
           <CustomLink href="/experience" title={"Experience"} className={"ml-4"} />
+          <CustomLink href="/resume" title={"Resume"} className={"ml-4"} />
           {/* Contact link */}
           <CustomLink href="/contact" title={"Contact"} className={"ml-6"} />
           {/* New Plain View (Resume) link */}
@@ -141,6 +142,7 @@ const Navbar = () => {
             <CustomMobileLink toggle={handlleClick} href="/about" title={"About"} />
             <CustomMobileLink toggle={handlleClick} href="/projects" title={"Projects"} />
             <CustomMobileLink toggle={handlleClick} href="/experience" title={"Experience"} />
+            <CustomMobileLink toggle={handlleClick} href="/resume" title={"Resume"} />
             <CustomMobileLink
               toggle={handlleClick}
               href="/contact"

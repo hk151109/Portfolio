@@ -86,9 +86,9 @@ export default function Resume() {
       <Transitions />
 
       <main className="w-full min-h-screen bg-light dark:bg-dark text-dark dark:text-light">
-        <Layout className="py-10">
-          {/* Grid: profile/cta + preview */}
-          <div className="grid grid-cols-12 gap-6 lg:gap-8">
+        <Layout className="py-6 md:py-8">
+          {/* Grid: preview only (kept simple for UX); container centered */}
+          <div className="mx-auto w-full max-w-6xl grid grid-cols-12 gap-6 lg:gap-8 px-2 sm:px-0">
             {/* Preview section */}
             <section className="col-span-12 lg:col-span-8">
               {/* Toolbar */}
@@ -133,7 +133,7 @@ export default function Resume() {
                 </div>
               </div>
 
-              <div className="relative rounded-xl overflow-hidden shadow-xl ring-1 ring-gray-200 dark:ring-gray-700 bg-white">
+        <div className="relative rounded-xl overflow-hidden shadow-xl ring-1 ring-gray-200 dark:ring-gray-700 bg-white">
                 {isLoading && (
                   <div className="absolute inset-0 flex items-center justify-center bg-white/70 dark:bg-black/40 z-10">
                     <div className="flex items-center gap-3 text-gray-700 dark:text-gray-200">
@@ -145,7 +145,7 @@ export default function Resume() {
 
                 <iframe
                   src={pdfUrl}
-                  className="w-full h-[82vh] border-0"
+          className="w-full h-[84vh] md:h-[86vh] border-0"
                   title="Harikrishnan Resume"
                   onLoad={() => setIsLoading(false)}
                 />

@@ -93,7 +93,7 @@ const Detail = ({ entry }) => {
         </span>
         {infoKeys.map((key, idx) => (
           <p key={idx} className="font-medium md:text-sm mt-1">
-            ▶ {entry[key]}
+            ● {entry[key]}
           </p>
         ))}
       </motion.div>
