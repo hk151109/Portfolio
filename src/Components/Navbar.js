@@ -90,13 +90,13 @@ const Navbar = () => {
           {/* Contact link */}
           <CustomLink href="/contact" title={"Contact"} className={"ml-6"} />
           {/* New Plain View (Resume) link */}
-          <a
+          {/* <a
             href="/resume.html" // Path to your resume HTML file in the public folder
             target="_blank"
             className="ml-6 text-dark dark:text-light hover:text-primary transition duration-300"
           >
             Plain View
-          </a>
+          </a> */}
         </nav>
         <nav className="flex item-center justify-center flex-wrap">
           <motion.a

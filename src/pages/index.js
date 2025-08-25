@@ -74,14 +74,22 @@ export default function Home() {
                 >
                   RESUME <LinkArrow />
                 </Link>
+
+                <a
+                  href="/resume.html" // Path to your resume HTML file in the public folder
+                  target="_blank"
+                  className="ml-4 flex items-center m-1.5 bg-dark text-light p-2 rounded-lg text-lg font-semibold dark:text-dark dark:bg-light hover:dark:bg-dark hover:dark:text-light hover:bg-light hover:text-dark border-2 border-solid border-transparent hover:border-dark hover:dark:border-light md:p-2 md:px-4 md:text-base"
+                >
+                  Plain View <GoProject className="ml-2" />
+                </a>              
                 {/* <Link
                   href={"/projects"}
                   target="_self"
                   className="ml-4 flex items-center m-1.5 bg-dark text-light p-2 rounded-lg text-lg font-semibold dark:text-dark dark:bg-light hover:dark:bg-dark hover:dark:text-light hover:bg-light hover:text-dark border-2 border-solid border-transparent hover:border-dark hover:dark:border-light md:p-2 md:px-4 md:text-base"
                 >
                   PROJECT <GoProject className="ml-2" />
-                </Link>
-                <Link
+                </Link> */}
+                {/* <Link
                   href="/about"
                   target={"_self"}
                   className="flex items-center m-1.5  bg-dark text-light m-1.5 p-2 w-[130px] rounded-lg text-lg font-semibold dark:text-dark dark:bg-light hover:dark:bg-dark hover:dark:text-light hover:bg-light hover:text-dark border-2 border-solid border-transparent hover:border-dark hover:dark:border-light md:p-2 md:px-4 md:text-base"

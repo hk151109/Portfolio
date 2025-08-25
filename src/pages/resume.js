@@ -4,7 +4,10 @@ import Layout from '@/Components/Layout';
 import Transitions from '@/Components/Transitions';
 import Link from 'next/link';
 import { LinkArrow } from '@/Components/Icons';
-import { FiDownload, FiExternalLink, FiPrinter, FiShare2 } from 'react-icons/fi';
+import { FiDownload, FiExternalLink, FiPrinter, FiShare2, FiSettings } from 'react-icons/fi';
+
+// Single source of truth for the resume PDF path
+const RESUME_PDF_PATH = '/Harikrishnan_Gopal_Resume.pdf';
 
 // Server-side: if it's a mobile device, redirect to the raw PDF so the browser's default viewer is used
 export async function getServerSideProps({ req }) {
@@ -13,7 +16,7 @@ export async function getServerSideProps({ req }) {
   if (isMobile) {
     return {
       redirect: {
-        destination: '/HarikrishnanGopal_ML_Resume.pdf',
+  destination: RESUME_PDF_PATH,
         permanent: false,
       },
     };
@@ -25,32 +28,56 @@ export default function Resume() {
   const [pdfUrl, setPdfUrl] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [nativeToolbar, setNativeToolbar] = useState(false);
 
   // Client-side fallback: if small viewport, use default browser viewer
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const isSmall = window.matchMedia('(max-width: 767px)').matches;
       if (isSmall) {
-        window.location.replace('/HarikrishnanGopal_ML_Resume.pdf');
+    window.location.replace(RESUME_PDF_PATH);
       }
     }
   }, []);
 
   useEffect(() => {
-    // Embed with minimal chrome where supported
-    setPdfUrl('/HarikrishnanGopal_ML_Resume.pdf#toolbar=0&navpanes=0');
+    // Embed PDF: either minimal or with native toolbar
+  const base = RESUME_PDF_PATH;
+    const url = nativeToolbar ? `${base}#view=FitH` : `${base}#toolbar=0&navpanes=0&zoom=120`;
+    setPdfUrl(url);
 
     const timer = setTimeout(() => setIsLoading(false), 600);
     return () => clearTimeout(timer);
+  }, [nativeToolbar]);
+
+  // Keyboard shortcuts: d=download, p=print, o=open new tab, s=share, t=toggle toolbar
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) return;
+      const k = e.key.toLowerCase();
+      if (k === 'd') {
+    window.location.href = RESUME_PDF_PATH;
+      } else if (k === 'p') {
+        printPdf();
+      } else if (k === 'o') {
+        openInNewTab();
+      } else if (k === 's') {
+        sharePage();
+      } else if (k === 't') {
+        setNativeToolbar((v) => !v);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
   }, []);
 
   const openInNewTab = () => {
-    window.open('/HarikrishnanGopal_ML_Resume.pdf', '_blank', 'noopener');
+  window.open(RESUME_PDF_PATH, '_blank', 'noopener');
   };
 
   const printPdf = () => {
     // Easiest reliable cross-browser: open in new tab for print
-    const w = window.open('/HarikrishnanGopal_ML_Resume.pdf', '_blank', 'noopener');
+  const w = window.open(RESUME_PDF_PATH, '_blank', 'noopener');
     if (w) {
       // Best-effort: try to trigger print after load
       const onLoad = () => {
@@ -92,13 +119,14 @@ export default function Resume() {
             {/* Preview section */}
             <section className="col-span-12 lg:col-span-8">
               {/* Toolbar */}
-              <div className="relative mb-4 py-2">
+              <div className="relative mb-4 py-3 min-h-[56px]">
                 <h2 className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-3xl md:text-4xl font-extrabold text-center">Resume Preview</h2>
                 <div className="flex items-center justify-end gap-2">
                   <button
-                    onClick={() => (window.location.href = '/HarikrishnanGopal_ML_Resume.pdf')}
+                    onClick={() => (window.location.href = RESUME_PDF_PATH)}
                     className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold bg-dark text-light dark:bg-light dark:text-dark hover:opacity-90"
                     title="Download"
+                    aria-label="Download resume"
                   >
                     <FiDownload className="h-4 w-4" />
                     <span className="hidden sm:inline">Download</span>
@@ -107,29 +135,42 @@ export default function Resume() {
                     onClick={openInNewTab}
                     className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold border border-dark dark:border-light hover:bg-dark hover:text-light dark:hover:bg-light dark:hover:text-dark"
                     title="Open in new tab"
+                    aria-label="Open resume in new tab"
                   >
                     <FiExternalLink className="h-4 w-4" />
                     <span className="hidden sm:inline">New tab</span>
                   </button>
-                  <button
+                  {/* <button
                     onClick={printPdf}
                     className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold border border-dark dark:border-light hover:bg-dark hover:text-light dark:hover:bg-light dark:hover:text-dark"
                     title="Print"
+                    aria-label="Print resume"
                   >
                     <FiPrinter className="h-4 w-4" />
                     <span className="hidden sm:inline">Print</span>
                   </button>
                   <button
+                    onClick={() => setNativeToolbar((v) => !v)}
+                    className={`inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold border border-dark dark:border-light hover:bg-dark hover:text-light dark:hover:bg-light dark:hover:text-dark ${nativeToolbar ? 'bg-dark text-light dark:bg-light dark:text-dark' : ''}`}
+                    title={nativeToolbar ? 'Hide PDF toolbar' : 'Show PDF toolbar'}
+                    aria-pressed={nativeToolbar}
+                    aria-label="Toggle PDF native toolbar"
+                  >
+                    <FiSettings className="h-4 w-4" />
+                    <span className="hidden sm:inline">{nativeToolbar ? 'Hide toolbar' : 'Show toolbar'}</span>
+                  </button>
+                  <button
                     onClick={sharePage}
                     className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold border border-dark dark:border-light hover:bg-dark hover:text-light dark:hover:bg-light dark:hover:text-dark relative"
                     title="Share"
+                    aria-label="Share resume page"
                   >
                     <FiShare2 className="h-4 w-4" />
                     <span className="hidden sm:inline">Share</span>
                     {copied && (
                       <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-green-600 dark:text-green-400">Copied!</span>
                     )}
-                  </button>
+                  </button> */}
                 </div>
               </div>
 
@@ -145,7 +186,7 @@ export default function Resume() {
 
                 <iframe
                   src={pdfUrl}
-          className="w-full h-[84vh] md:h-[86vh] border-0"
+                  className="w-full h-[88vh] md:h-[90vh] border-0"
                   title="Harikrishnan Resume"
                   onLoad={() => setIsLoading(false)}
                 />
