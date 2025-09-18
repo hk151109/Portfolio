@@ -48,12 +48,12 @@ export default function Home() {
               />
 
               <AnimatedText
-                text="Data Science Engineer | Machine Learning"
+                text="Software Engineer | Machine Learning"
                 className="text-2xl font-semibold text-gray-300 mt-2 !text-left xl:!text-xl lg:!text-center lg:!text-2xl md:!text-xl sm:!text-lg"
               />
 
               <ul className="my-4 text-base font-medium md:text-sm sm:text-xs ">
-                <li className="m-1">I&apos;m a Machine Learning and Data Science Engineer passionate about 
+                <li className="m-1">I&apos;m a Software Engineer and Machine Learning Enthusiast passionate about 
                 unraveling data&apos;s secrets. From predictive modeling to deep learning, I thrive on turning data into 
                 innovative solutions. Join me on this journey of transforming ideas into intelligent outcomes. 
                 Explore my work and let&apos;s shape the future together.</li>
